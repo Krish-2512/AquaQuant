@@ -63,7 +63,12 @@ const handler = NextAuth({
   callbacks: {
     async redirect({ url, baseUrl }) {
       // Force all successful logins to go to /dashboard
+      if (url === baseUrl || url.includes("/auth/signin")) {
+        return baseUrl;
+      }
+      // Otherwise, default to dashboard for logins
       return `${baseUrl}/dashboard`;
+    
     },
   },
 });

@@ -1554,7 +1554,10 @@ import {
   ChevronLeft, Quote, BookOpen, Users, ArrowRight, GraduationCap,
   CheckCircle2, Star, Award
 } from 'lucide-react';
+
 import Link from 'next/link';
+import { signOut, useSession } from 'next-auth/react';
+
 
 // --- DATA ---
 const tickerMessages = [
@@ -1742,8 +1745,10 @@ const TestimonialCarousel = () => {
 
 export default function Page() {
   const [tickerIndex, setTickerIndex] = useState(0);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [answer, setAnswer] = useState("");
   const [hasMounted, setHasMounted] = useState(false);
+  const { data: session } = useSession(); // Access user session data
 
   useEffect(() => {
     setHasMounted(true);
@@ -1793,10 +1798,86 @@ export default function Page() {
                 <a key={item} href="#" className="hover:text-white transition-colors">{item}</a>
               ))}
             </div>
-            {/* <button className="bg-sky-400 text-sky-950 px-8 py-2.5 rounded-full text-[13px] font-black hover:scale-105 transition-all">SignIn</button> */}
-            <Link href="/auth/signin">
+            
+            {/* {session ? (
+    <div className="flex items-center gap-3">
+      <span className="text-[10px] font-mono text-sky-400 uppercase tracking-widest font-bold">
+        {session.user?.name}
+      </span>
+      <div className="w-10 h-10 rounded-full border-2 border-sky-400 overflow-hidden shadow-[0_0_15px_rgba(56,189,248,0.3)]">
+        <img 
+          src={session.user?.image || "https://ui-avatars.com/api/?name=User"} 
+          alt="profile" 
+          className="w-full h-full object-cover"
+        />
+      </div>
+    </div>
+  ) : (
+    <Link href="/auth/signin">
                <button className="bg-sky-400 text-sky-950 px-8 py-2.5 rounded-full text-[13px] font-black hover:scale-105 transition-all">SignIn</button>
             </Link>
+  )} */}
+
+<div className="relative">
+    {session ? (
+      <div className="flex items-center gap-4">
+        {/* <div className="text-right hidden sm:block">
+          
+         
+        </div> */}
+        
+        {/* Profile Trigger */}
+        <button 
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+          className="w-10 h-10 rounded-full border-2 border-sky-400 overflow-hidden shadow-[0_0_15px_rgba(56,189,248,0.3)] hover:scale-110 transition-transform relative"
+        >
+          <img src={session.user?.image} alt="profile" className="w-full h-full object-cover" />
+        </button>
+
+        {/* Dropdown Menu */}
+        <AnimatePresence>
+          {dropdownOpen && (
+            <>
+              {/* Invisible backdrop to close on click outside */}
+              <div className="fixed inset-0 z-[-1]" onClick={() => setDropdownOpen(false)} />
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                className="absolute right-0 mt-14 w-48 bg-slate-900 border border-white/10 rounded-2xl shadow-2xl p-2 z-[100] backdrop-blur-xl"
+              >
+                <div className="px-4 py-3 border-b border-white/5 mb-2">
+                  <p className="text-[10px] font-mono text-slate-400 truncate">{session.user?.email}</p>
+                  <p className="text-[10px] font-mono text-sky-400 uppercase tracking-widest font-bold">{session.user?.name}</p>
+                </div>
+                
+                <button 
+                 onClick={async () => {
+                  const data = await signOut({ redirect: false, callbackUrl: "/" });
+                  window.location.href = "/"; // Manually force the browser to the home page
+                }}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-400/10 rounded-xl transition-colors text-[11px] font-black uppercase tracking-widest"
+                >
+                  {/* <Activity size={14} className="rotate-180" />  */}
+                SignOut
+                </button>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </div>
+    ) : (
+      <Link href="/auth/signin">
+        <button className="bg-sky-400 text-sky-950 px-8 py-2.5 rounded-full text-[13px] font-black hover:scale-105 hover:bg-white transition-all">
+          SignIn
+        </button>
+      </Link>
+    )}
+    </div>
+
+            {/* <button className="bg-sky-400 text-sky-950 px-8 py-2.5 rounded-full text-[13px] font-black hover:scale-105 transition-all">SignIn</button> */}
+            
           </nav>
 
           {/* HERO */}
@@ -1807,9 +1888,14 @@ export default function Page() {
               <p className="text-sky-100/60 text-xl mb-12 max-w-2xl mx-auto font-light leading-relaxed italic">
                 The definitive simulation engine for quantitative finance interviews. Solve real problems exactly how top firms test candidates.
               </p>
-              <div className="flex justify-center">
+              {/* <div className="flex justify-center">
                 <button className="bg-white text-sky-950 px-12 py-5 rounded-2xl font-black uppercase text-sm tracking-widest shadow-xl">Start Solving</button>
-              </div>
+              </div> */}
+              <Link href={session ? "/dashboard" : "/auth/signin"}>
+        <button className="bg-white text-sky-950 px-12 py-5 rounded-2xl font-black uppercase text-sm tracking-widest shadow-xl hover:scale-105 hover:bg-sky-400 hover:text-white transition-all duration-300">
+          {session ? "Start Solving" : "Start Solving"}
+        </button>
+      </Link>
           </section>
 
           {/* ORBITAL NEXUS */}
@@ -2023,11 +2109,16 @@ export default function Page() {
                  <input type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} className="bg-black/20 border border-white/20 rounded-2xl px-8 py-5 flex-1 font-mono text-white placeholder:text-sky-200 outline-none focus:border-white transition-all" placeholder="Enter (e.g. 2/11)" />
                   <button className="bg-white text-sky-950 px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-sky-100 transition-colors shadow-2xl">Submit Answer</button>
                </div>
-               <Link href="/auth/signin">
-              {/* <button className="bg-sky-400 text-sky-950 px-8 py-2.5 rounded-full text-[13px] font-black hover:scale-105 transition-all">SignIn</button> */}
-            
+               {/* <Link href="/auth/signin">
+              
                <button className="flex items-center gap-3 text-white text-[10px] font-black uppercase tracking-[0.4em] opacity-60 hover:opacity-100 transition-opacity mt-4 border-b border-white/20 pb-1"><Terminal size={12} /> Go to Problem Set</button>
-               </Link>
+               </Link> */}
+               <Link href={session ? "/dashboard" : "/auth/signin"}>
+  <button className="flex items-center gap-3 text-white text-[10px] font-black uppercase tracking-[0.4em] opacity-60 hover:opacity-100 transition-opacity mt-4 border-b border-white/20 pb-1">
+    <Terminal size={12} /> 
+    {session ? "Go to Problem Set" : "Go to Problem Set"}
+  </button>
+</Link>
               </div>
             </div>
            </section>
