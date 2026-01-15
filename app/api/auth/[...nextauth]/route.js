@@ -62,7 +62,8 @@ const handler = NextAuth({
   // ADD THIS TO FIX VERCEL REDIRECTS
   callbacks: {
     async redirect({ url, baseUrl }) {
-      return url.startsWith(baseUrl) ? url : baseUrl;
+      // Force all successful logins to go to /dashboard
+      return `${baseUrl}/dashboard`;
     },
   },
 });
