@@ -1,43 +1,55 @@
 "use client";
 
-import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function SignIn() {
+export default function Signup() {
+  const router = useRouter();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  async function handleCredentialsLogin(e) {
+  async function handleSignup(e) {
     e.preventDefault();
     setError("");
 
-    const res = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
     });
 
-    if (res?.error) {
-      setError("Invalid email or password");
-    } else {
-      window.location.href = "/dashboard";
+    if (!res.ok) {
+      const data = await res.json();
+      setError(data.error || "Signup failed");
+      return;
     }
+
+    // After successful signup, go to signin page
+    router.push("/auth/signin");
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black">
       <div className="border border-gray-800 rounded-xl p-10 w-full max-w-md">
         <h2 className="text-2xl font-semibold mb-4 text-white">
-          Sign in to QuantPrep
+          Create your account
         </h2>
 
         <p className="text-gray-400 mb-8">
-          Practice real quant interview problems.
+          Start practicing real quant interview problems.
         </p>
 
-        {/* 🔹 EMAIL + PASSWORD LOGIN */}
-        <form onSubmit={handleCredentialsLogin} className="space-y-4 mb-6">
+        <form onSubmit={handleSignup} className="space-y-4">
+          <input
+            type="text"
+            placeholder="Name (optional)"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full px-4 py-3 rounded-lg bg-black border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-white"
+          />
+
           <input
             type="email"
             placeholder="Email"
@@ -64,31 +76,17 @@ export default function SignIn() {
             type="submit"
             className="w-full py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-200 transition"
           >
-            Sign in with Email
+            Create account
           </button>
         </form>
 
-        <div className="flex items-center gap-3 my-6">
-          <div className="flex-1 h-px bg-gray-800" />
-          <span className="text-gray-500 text-sm">OR</span>
-          <div className="flex-1 h-px bg-gray-800" />
-        </div>
-
-        {/* 🔹 GOOGLE LOGIN (UNCHANGED) */}
-        <button
-          onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-          className="w-full py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-200 transition"
-        >
-          Continue with Google
-        </button>
-
         <p className="text-gray-400 text-sm mt-6 text-center">
-          New here?{" "}
+          Already have an account?{" "}
           <a
-            href="/auth/signup"
+            href="/auth/signin"
             className="text-white hover:underline"
           >
-            Create an account
+            Sign in
           </a>
         </p>
       </div>
