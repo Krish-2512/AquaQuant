@@ -1,28 +1,66 @@
+"use client";
+import React, { useState, useEffect, use } from 'react'; // 1. Added 'use'
+import { useParams } from 'next/navigation';
 import ProblemWorkspace from "@/components/ProblemWorkspace";
 import ProgressSidebar from "@/components/ProgressSidebar";
 
-// This will render for ANY ID clicked on the dashboard
-export default function ProblemPage() {
-  
-  // Static test data to check the interface
-  const staticProblem = {
-    title: "The Poisoned Wine",
-    difficulty: "Medium",
-    category: "Brainteasers",
-    description: "A king has 1,000 bottles of wine. One is poisoned and will kill anyone who drinks it within 24 hours. You have 10 prisoners to test the wine. What is the minimum number of days required to find the poisoned bottle, and how do you do it?",
-    hint: "Think about binary representation. Each prisoner can represent a bit (0 or 1) in a 10-bit number.",
-    solution: "1 day. Assign each bottle a binary number from 1 to 1000. Each prisoner drinks from the bottles that have a '1' in their specific bit position."
+// 2. REMOVE 'async' from the function definition
+export default function ProblemPage({ params }) {
+  // 3. In Next.js 15/16, we unwrap the params promise using React.use()
+  const resolvedParams = use(params); 
+  const id = resolvedParams.id;
+
+  const [problem, setProblem] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (id) {
+      fetchProblemDetails();
+    }
+  }, [id]);
+
+  const fetchProblemDetails = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/questions/${id}`);
+      const json = await res.json();
+      
+      if (json.success) {
+        const data = json.data;
+        setProblem({
+          title: data.Title || data.title,
+          difficulty: data.Difficulty || data.difficulty,
+          category: data.Category || data.category,
+          description: data.Content || data.content,
+          solution: data.Solution || data.solution,
+          answer: data.Answer || data.answer,
+          hint: data.Hint || data.hint || "No hint available.",
+          relatedTopics: data.RelatedTopics || data.relatedTopics || [],
+          constraints: data.constraints || [],
+          
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching problem:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  return (
-    <div className="flex h-screen bg-white overflow-hidden">
-      {/* Left: Your 50% better Workspace UI */}
-      <ProblemWorkspace 
-        problem={staticProblem} 
-      />
+  if (loading) {
+    return (
+      <div className="h-screen w-screen bg-[#020617] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-sky-500"></div>
+      </div>
+    );
+  }
 
-      {/* Right: Thin Progress Sidebar */}
-      <ProgressSidebar />
+  if (!problem) return <div className="text-white text-center mt-20">Problem not found.</div>;
+
+  return (
+    <div className="flex h-screen bg-[#020617] overflow-hidden">
+      <ProblemWorkspace problem={problem} />
+      <ProgressSidebar problemId={id} />
     </div>
   );
 }

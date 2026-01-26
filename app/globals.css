@@ -3,6 +3,19 @@
 @tailwind utilities;
 
 @import "tailwindcss";
+/* Add to globals.css */
+
+
+.katex {
+  font-size: 1.05em;
+  line-height: 1.2;
+  color: #e2e8f0; /* slate-200 */
+}
+
+/* Make variables look distinct */
+.katex .mord.mathnormal {
+  color: #7dd3fc; /* sky-300 */
+}
  /* body {
  
   background-color: #020617;
