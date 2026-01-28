@@ -132,6 +132,7 @@ import {
   History, CheckCircle, Code, 
   Maximize2, Save, Check 
 } from 'lucide-react';
+import CodeEditor from '@/components/CodeEditor';
 
 export default function ProblemWorkspace({ problem }) {
   const router = useRouter(); // 2. Initialize router
@@ -139,6 +140,16 @@ export default function ProblemWorkspace({ problem }) {
   const [activeTab, setActiveTab] = useState('Workspace');
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState(null);
+  const [language, setLanguage] = useState('javascript');
+  const templates = {
+    javascript: `// JavaScript template\nfunction solve(){\n  // write your solution\n  return null;\n}`,
+    python: `# Python template\ndef solve():\n    # write your solution\n    return None\n`,
+    cpp: `// C++ template\n#include <bits/stdc++.h>\nusing namespace std;\nint main(){\n  // write your solution\n  return 0;\n}`,
+    java: `// Java template\npublic class Solution {\n  public static void main(String[] args){\n    // write your solution\n  }\n}`,
+  };
+
+  const [code, setCode] = useState(templates[language]);
+  const [runOutput, setRunOutput] = useState('');
 
   const handleSaveNotes = () => {
     setIsSaving(true);
@@ -252,10 +263,98 @@ export default function ProblemWorkspace({ problem }) {
                 </div>
               </div>
               
-              <textarea
-                className="w-full h-80 p-8 bg-transparent text-sky-50 font-mono text-sm leading-relaxed outline-none resize-none placeholder:text-slate-700"
-                placeholder="// Type your derivation here..."
-              />
+              <div className="mb-6">
+                <CodeEditor
+                  value={code}
+                  onChange={(v) => setCode(v)}
+                  height="360px"
+                  language={language}
+                  onLanguageChange={(lang) => {
+                    setLanguage(lang);
+                    // load template for selected language
+                    setCode(templates[lang] || '');
+                  }}
+                  languages={[
+                    { id: 'javascript', name: 'JavaScript' },
+                    { id: 'python', name: 'Python' },
+                    { id: 'cpp', name: 'C++' },
+                    { id: 'java', name: 'Java' },
+                  ]}
+                />
+              </div>
+
+              {/* Run controls and output */}
+              <div className="mb-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <button
+                    onClick={async () => {
+                        try {
+                          const res = await fetch('/api/run', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ language, code }),
+                          });
+                          const data = await res.json();
+
+                          // Format output for human readability (compiler-like)
+                          let out = '';
+
+                          // Compilation section (for compiled languages)
+                          if (data.compileExitCode !== undefined) {
+                            out += `=== Compilation ===\nExit code: ${data.compileExitCode}\n`;
+                            if (data.compileStdout) out += `\n[compiler stdout]\n${data.compileStdout}\n`;
+                            if (data.compileStderr) out += `\n[compiler stderr]\n${data.compileStderr}\n`;
+                            out += '\n';
+                          }
+
+                          // Runtime output: show if there is any runtime info or an explicit run exit code
+                          const hasRuntime = data.runExitCode !== undefined || (data.stdout && data.stdout.length > 0) || (data.stderr && data.stderr.length > 0) || data.exitCode !== undefined;
+                          if (hasRuntime) {
+                            out += `=== Program Output ===\n`;
+                            if (data.stdout && data.stdout.length > 0) out += `${data.stdout}\n`;
+                            else out += `<no stdout>\n`;
+
+                            if (data.stderr && data.stderr.length > 0) out += `\n=== Program Errors ===\n${data.stderr}\n`;
+
+                            // some runners use different exit code keys
+                            const exitCode = data.runExitCode ?? data.exitCode;
+                            if (exitCode !== undefined) out += `\nExit code: ${exitCode}\n`;
+                            out += '\n';
+                          }
+
+                          // Fallback for JS runner that returns stdout or error without compile/run keys
+                          if (!hasRuntime && (data.stdout || data.error)) {
+                            out += `=== Program Output ===\n`;
+                            if (data.stdout) out += `${data.stdout}\n`;
+                            if (data.error) out += `\nError: ${data.error}\n`;
+                          }
+
+                          if (!out) out = JSON.stringify(data, null, 2);
+
+                          setRunOutput(out);
+                        } catch (e) {
+                          setRunOutput(String(e));
+                        }
+                      }}
+                    className="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-black uppercase text-sm"
+                  >
+                    Run
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setRunOutput('');
+                    }}
+                    className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl font-medium text-sm"
+                  >
+                    Clear Output
+                  </button>
+                </div>
+
+                <div className="bg-black/60 border border-white/5 rounded-lg p-4 font-mono text-sm text-slate-200 h-40 overflow-auto whitespace-pre-wrap">
+                  {typeof runOutput === 'string' && runOutput.length > 0 ? runOutput : 'Run output will appear here.'}
+                </div>
+              </div>
 
               {/* SAVE BUTTON OVERLAY */}
               <div className="absolute bottom-4 right-6">
@@ -280,7 +379,14 @@ export default function ProblemWorkspace({ problem }) {
                   className="w-full bg-black/40 border border-white/10 rounded-xl px-6 py-4 font-mono text-2xl text-sky-400 font-bold outline-none focus:border-sky-500/50 transition-all shadow-inner"
                 />
               </div>
-              <button className="h-[64px] bg-sky-500 hover:bg-sky-400 text-white rounded-xl flex items-center justify-center gap-3 font-black uppercase tracking-widest transition-all hover:shadow-[0_0_30px_rgba(14,165,233,0.4)] active:scale-95">
+              <button
+                onClick={() => {
+                  // For now, just log the code - later integrate runner/submit API
+                  console.log('Submitted code:', code);
+                  alert('Code submitted to console (developer mode).');
+                }}
+                className="h-[64px] bg-sky-500 hover:bg-sky-400 text-white rounded-xl flex items-center justify-center gap-3 font-black uppercase tracking-widest transition-all hover:shadow-[0_0_30px_rgba(14,165,233,0.4)] active:scale-95"
+              >
                 <Send size={18} />
                 Submit
               </button>
