@@ -434,48 +434,42 @@ const [isCorrect, setIsCorrect] = useState(null); // null, true, or false
 
   // --- Inside ProblemWorkspace Component ---
 
-const handleCheckAnswer = async () => {
-  if (!userAnswer.trim()) return;
-
-  // FIX: Identify the ID safely
-  const qId = problem?._id || problem?.id;
-  if (!qId) {
-    console.error("Critical Error: Question ID is missing from problem object");
-    return;
-  }
-
-  const systemAnswer = String(problem.answer || "").trim().toLowerCase();
-  const userInput = String(userAnswer || "").trim().toLowerCase();
-  const correct = systemAnswer === userInput;
+  const handleCheckAnswer = async () => {
+    if (!userAnswer.trim()) return;
   
-  setIsCorrect(correct);
-
-  try {
-    const res = await fetch('/api/user/attempt', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        questionId: qId, // Use the safe qId
-        isCorrect: correct,
-        category: problem.category,
-        submissionText: userAnswer
-      })
-    });
-
-    if (!res.ok) {
-      const errorText = await res.text(); 
-      console.error(`Attempt Sync Failed: ${errorText}`);
+    // FALLBACK LOGIC: Get ID from prop OR URL
+    const pathSegments = window.location.pathname.split('/');
+    const idFromUrl = pathSegments[pathSegments.length - 1];
+    const qId = problem?._id || problem?.id || idFromUrl;
+  
+    if (!qId || qId === 'problems') {
+      console.error("Critical Error: Question ID is missing");
       return;
     }
-
-    const data = await res.json();
-    if (data.success) {
-      fetchAttachments(); // Refresh the history list
+  
+    const systemAnswer = String(problem.answer || "").trim().toLowerCase();
+    const userInput = String(userAnswer || "").trim().toLowerCase();
+    const correct = systemAnswer === userInput;
+    
+    setIsCorrect(correct);
+  
+    try {
+      const res = await fetch('/api/user/attempt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          questionId: qId, 
+          isCorrect: correct,
+          category: problem.category || "General",
+          submissionText: userAnswer
+        })
+      });
+  
+      if (res.ok){ fetchAttachments(); window.dispatchEvent(new Event('statsUpdated'));}
+    } catch (err) {
+      console.error("Network Error:", err);
     }
-  } catch (err) {
-    console.error("Network Error during check:", err);
-  }
-};
+  };
 
 
   const getDiffStyle = (diff) => {

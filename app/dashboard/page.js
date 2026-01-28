@@ -193,7 +193,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   Search, CheckCircle2, Circle, 
-  Terminal, BookOpen, MessageSquare, Brain, Notebook
+  Terminal, BookOpen, MessageSquare, Brain, Notebook,
+  Code2
 } from 'lucide-react';
 
 import RightPanel from '@/components/RightPanel';
@@ -207,6 +208,7 @@ export default function ProblemsPage() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 const [totalPages, setTotalPages] = useState(1);
+const [category, setCategory] = useState('all'); // 'all', 'math', or 'coding'
   
   // States for Filter Logic
   const [searchQuery, setSearchQuery] = useState("");
@@ -267,19 +269,28 @@ const [totalPages, setTotalPages] = useState(1);
               Aqua
             </span>
           </Link>
+          <Link href="/coding">
+  <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 hover:bg-sky-500 hover:text-white transition-all group ml-2">
+    <Code2 size={14} className="group-hover:rotate-12 transition-transform" />
+    <span className="text-[11px] font-black uppercase tracking-widest">Code_Matrix</span>
+  </button>
+</Link>
           <div className="hidden md:flex items-center gap-6">
-            {[
-              { name: 'Problems', icon: <Terminal size={14}/>, active: true }, 
-              { name: 'Theory', icon: <BookOpen size={14}/> }, 
-              { name: 'Discussion', icon: <MessageSquare size={14}/> }, 
-              { name: 'Mental Maths', icon: <Brain size={14}/> }, 
-              { name: 'Notebooks', icon: <Notebook size={14}/> }
-            ].map((item) => (
-              <a key={item.name} href="#" className={`flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest transition-colors ${item.active ? 'text-sky-400' : 'text-slate-500 hover:text-white'}`}>
-                {item.icon} {item.name}
-              </a>
-            ))}
-          </div>
+  {[
+    { name: 'Problems', icon: <Terminal size={14}/>, active: true }, 
+    { name: 'Theory', icon: <BookOpen size={14}/> }, 
+    { name: 'Discussion', icon: <MessageSquare size={14}/> }, 
+    { name: 'Mental Maths', icon: <Brain size={14}/> }, 
+    { name: 'Notebooks', icon: <Notebook size={14}/> }
+  ].map((item) => (
+    <a key={item.name} href="#" className={`flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest transition-colors ${item.active ? 'text-sky-400' : 'text-slate-500 hover:text-white'}`}>
+      {item.icon} {item.name}
+    </a>
+  ))}
+
+  {/* --- ADJUSTED CODING BUTTON --- */}
+  
+</div>
         </div>
         <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-400 to-blue-600 border border-white/10" />
       </nav>
