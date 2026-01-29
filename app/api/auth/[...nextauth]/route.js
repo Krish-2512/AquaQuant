@@ -82,45 +82,85 @@ const handler = NextAuth({
     signIn: "/auth/signin",
   },
   callbacks: {
-    async jwt({ token, user, trigger }) {
-      // 1. When user first logs in, initialize their custom fields in the DB
-      if (user) {
-        await dbConnect();
-        const dbUser = await User.findById(user.id);
+    // async jwt({ token, user, trigger }) {
+    //   // 1. When user first logs in, initialize their custom fields in the DB
+    //   if (user) {
+    //     await dbConnect();
+    //     const dbUser = await User.findById(user.id);
         
-        // If it's a new user from the adapter, add our custom tracking fields
-        if (dbUser && !dbUser.categoryStats) {
-          dbUser.categoryStats = {
-            probability: { attempted: 0, correct: 0 },
-            brainteaser: { attempted: 0, correct: 0 },
-            finance: { attempted: 0, correct: 0 },
-            statistics: { attempted: 0, correct: 0 },
-            coding: { attempted: 0, correct: 0 }
-          };
-          dbUser.university = "Not Specified";
-          await dbUser.save();
-        }
-        token.id = user.id;
-      }
-      return token;
-    },
+    //     // If it's a new user from the adapter, add our custom tracking fields
+    //     if (dbUser && !dbUser.categoryStats) {
+    //       dbUser.categoryStats = {
+    //         probability: { attempted: 0, correct: 0 },
+    //         brainteaser: { attempted: 0, correct: 0 },
+    //         finance: { attempted: 0, correct: 0 },
+    //         statistics: { attempted: 0, correct: 0 },
+    //         coding: { attempted: 0, correct: 0 }
+    //       };
+    //       dbUser.university = "Not Specified";
+    //       await dbUser.save();
+    //     }
+    //     token.id = user.id;
+    //   }
+    //   return token;
+    // },
 
-    async session({ session, token }) {
-      // 2. Expose the User ID and custom data to the frontend
-      if (session.user && token.id) {
-        session.user.id = token.id;
+    // async session({ session, token }) {
+    //   // 2. Expose the User ID and custom data to the frontend
+    //   if (session.user && token.id) {
+    //     session.user.id = token.id;
         
-        // Fetch fresh data for the session (university, etc)
-        await dbConnect();
-        const dbUser = await User.findById(token.id).lean();
-        if (dbUser) {
-          session.user.university = dbUser.university;
-          session.user.totalAttempted = dbUser.totalAttempted;
-        }
-      }
-      return session;
-    },
+    //     // Fetch fresh data for the session (university, etc)
+    //     await dbConnect();
+    //     const dbUser = await User.findById(token.id).lean();
+    //     if (dbUser) {
+    //       session.user.university = dbUser.university;
+    //       session.user.totalAttempted = dbUser.totalAttempted;
+    //     }
+    //   }
+    //   return session;
+    // },
 
+
+    // Inside callbacks:
+async jwt({ token, user }) {
+  if (user) {
+    token.id = user.id;
+    try {
+      await dbConnect();
+      const dbUser = await User.findById(user.id);
+      if (dbUser && !dbUser.categoryStats) {
+        dbUser.categoryStats = {
+          probability: { attempted: 0, correct: 0 },
+          brainteaser: { attempted: 0, correct: 0 },
+          finance: { attempted: 0, correct: 0 },
+          statistics: { attempted: 0, correct: 0 },
+          coding: { attempted: 0, correct: 0 }
+        };
+        await dbUser.save();
+      }
+    } catch (e) {
+      console.error("Auth: DB initialization skipped during build/runtime error", e);
+    }
+  }
+  return token;
+},
+
+async session({ session, token }) {
+  if (session.user && token.id) {
+    session.user.id = token.id;
+    try {
+      await dbConnect();
+      const dbUser = await User.findById(token.id).lean();
+      if (dbUser) {
+        session.user.university = dbUser.university;
+      }
+    } catch (e) {
+      console.error("Auth: Session DB fetch skipped", e);
+    }
+  }
+  return session;
+},
     async redirect({ url, baseUrl }) {
       // Allows relative callback URLs
       if (url.startsWith("/")) return `${baseUrl}${url}`;
