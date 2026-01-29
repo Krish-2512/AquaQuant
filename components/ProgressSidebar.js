@@ -45,7 +45,7 @@ const skills = [
     glow: "shadow-[0_0_10px_rgba(14,165,233,0.5)]" 
   },
   { 
-    name: "Brainteasers", 
+    name: "Puzzles", 
     current: stats?.brainteasers || 0, // Lowercase
     total: 24, 
     color: "bg-emerald-500", 

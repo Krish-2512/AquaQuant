@@ -18,7 +18,8 @@ solutionCode: {
   javascript: { type: String },
   python: { type: String }
 },
-  difficulty: { type: String, enum: ['Easy', 'Medium', 'Hard'], default: 'Easy' }
+  difficulty: { type: String, enum: ['Easy', 'Medium', 'Hard'], default: 'Easy' },
+  
 }, { timestamps: true });
 
 export default mongoose.models.CodingQuestion || mongoose.model('CodingQuestion', CodingQuestionSchema);

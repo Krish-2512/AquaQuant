@@ -10,7 +10,7 @@ export async function GET() {
     const session = await getServerSession();
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const user = await User.findOne({ email: session.user.email }).select('questionProgress totalAttempted totalCorrect').lean();
+    const user = await User.findOne({ email: session.user.email }).select('questionProgress codingProgress totalAttempted totalCorrect').lean();
     if (!user) return NextResponse.json({ success: false, stats: {} });
 
     const solvedIds = user.questionProgress
@@ -20,6 +20,7 @@ export async function GET() {
     if (solvedIds.length === 0) {
       return NextResponse.json({ success: true, stats: { probability: 0, brainteasers: 0, statistics: 0, finance: 0 } });
     }
+    
 
     // .lean() is KEY here. It returns raw JSON, bypassing schema restrictions.
     const solvedDocs = await Question.find({ _id: { $in: solvedIds } }).lean();
@@ -46,11 +47,17 @@ export async function GET() {
       else if (cat.includes('statist')) dynamicStats.statistics++;
       else if (cat.includes('finance')) dynamicStats.finance++;
     });
+    const codingSolvedCount = user.codingProgress?.filter(p => p.status === 'solved').length || 0;
+    const codingTotalCount = user.codingProgress?.length || 0;
 
     // return NextResponse.json({ success: true, stats: dynamicStats });
     return NextResponse.json({ 
       success: true, 
       stats: dynamicStats, 
+      codingStats: {
+        solved: codingSolvedCount,
+        total: 25
+      },
       totalAttempted: user.totalAttempted || 0,
       totalSolved: user.totalCorrect || 0,
       // Optional: Calculate accuracy on the fly

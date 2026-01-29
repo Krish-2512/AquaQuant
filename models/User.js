@@ -33,6 +33,25 @@ const UserSchema = new mongoose.Schema({
       fileUrl: String, // URL from Cloudinary/AWS S3
       uploadedAt: { type: Date, default: Date.now }
     }]
+  }],
+
+  codingProgress: [{
+    codingQuestionId: { type: mongoose.Schema.Types.ObjectId, ref: 'CodingQuestion' },
+    status: { 
+      type: String, 
+      enum: ['unattempted', 'attempted', 'solved'], 
+      default: 'unattempted' 
+    },
+    attemptsCount: { type: Number, default: 0 },
+    lastAttempted: { type: Date, default: Date.now },
+    
+    // History log for the "Past Attempts" view in Codespace
+    pastSubmissions: [{
+      code: { type: String, required: true },
+      language: { type: String, default: 'javascript' },
+      isCorrect: { type: Boolean, required: true },
+      submittedAt: { type: Date, default: Date.now }
+    }]
   }]
 }, { timestamps: true });
 
