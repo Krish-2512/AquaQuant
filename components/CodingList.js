@@ -10,7 +10,8 @@ import Link from 'next/link';
 import { 
   Code2, ChevronRight, Terminal, CheckCircle2, 
   Zap, BarChart3, Activity, Search, X, 
-  Trophy
+  Trophy,
+  ArrowLeft
 } from 'lucide-react';
 import { useSession } from "next-auth/react";
 
@@ -57,6 +58,13 @@ export default function CodingList({ questions }) {
 
   return (
     <div className="space-y-8">
+      <Link 
+      href="/dashboard" 
+      className="inline-flex items-center gap-2 text-slate-500 hover:text-sky-400 transition-colors group"
+    >
+      <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+      <span className="text-[10px] font-black uppercase tracking-[0.2em]">Dashboard</span>
+    </Link>
       {/* --- ENHANCED GLOBAL PROGRESS DASHBOARD --- */}
       <div className="relative overflow-hidden bg-white/[0.02] border border-white/10 rounded-3xl p-6 md:p-8">
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 

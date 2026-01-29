@@ -14,10 +14,13 @@ import {
   ChevronDown
 } from 'lucide-react';
 
+import aqua_logo2 from '../../public/aqua_logo2.png';
+
 import RightPanel from '@/components/RightPanel';
 import LeftPanel from '@/components/LeftPanel';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 export default function ProblemsPage() {
   const { data: session } = useSession();
@@ -90,14 +93,27 @@ const [isCompanyOpen, setIsCompanyOpen] = useState(false);
       {/* 1. NAVBAR (UPDATED WITH PROFILE) */}
       <nav className="h-16 border-b border-white/5 bg-black/40 backdrop-blur-xl sticky top-0 z-50 flex items-center justify-between px-6">
         <div className="flex items-center gap-8">
-          <Link href="/" className="flex items-center gap-2 group transition-opacity hover:opacity-80 cursor-pointer">
+          {/* <Link href="/" className="flex items-center gap-2 group transition-opacity hover:opacity-80 cursor-pointer">
             <div className="w-8 h-8 bg-sky-500 rounded flex items-center justify-center font-black text-white text-xs shadow-[0_0_15px_rgba(14,165,233,0.4)]">
               Q
             </div>
             <span className="font-black tracking-tighter uppercase italic text-white group-hover:text-sky-400 transition-colors">
               Aqua
             </span>
-          </Link>
+          </Link> */}
+          <Link href="/" className="flex items-center gap-2 group transition-opacity hover:opacity-80 cursor-pointer">
+  <div className="w-8 h-8 relative  rounded flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(14,165,233,0.4)]">
+    <Image 
+      src={aqua_logo2} // Replace with your actual path (e.g., /logo.svg or /logo.png)
+      alt="Aqua"
+      fill
+      className="object-cover p-1" // 'p-1' adds a tiny padding so the logo doesn't touch the edges
+    />
+  </div>
+  <span className="font-black tracking-tighter uppercase italic text-white group-hover:text-sky-400 transition-colors">
+    Aqua
+  </span>
+</Link>
           
           <Link href="/coding">
             <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 hover:bg-sky-500 hover:text-white transition-all group ml-2">
