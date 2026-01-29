@@ -56,12 +56,12 @@ export default function SignIn() {
             })}
 
           {/* Demo credentials button */}
-          <button
+          {/* <button
             onClick={() => signIn("credentials", { username: "dev", password: "dev", callbackUrl: "/dashboard" })}
             className="w-full py-3 bg-slate-800 text-white rounded-lg font-medium hover:bg-slate-700 transition"
           >
             Continue as Demo
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
