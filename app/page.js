@@ -123,35 +123,139 @@ const whyAqua = [
 ];
 
 const QuantNexus = () => {
+  // return (
+  //   <div className="relative w-full h-[800px] flex items-center justify-center overflow-hidden">
+  //     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(56,189,248,0.2)_0%,_transparent_75%)]" />
+  //     {[1.2, 1.5, 1.8].map((s, i) => (
+  //       <motion.div 
+  //         key={i}
+  //         animate={{ scale: [1, s], opacity: [0.3, 0] }}
+  //         transition={{ duration: 4, repeat: Infinity, delay: i * 1.3 }}
+  //         className="absolute border border-white/20 rounded-full w-[400px] h-[400px]"
+  //       />
+  //     ))}
+  //     <motion.div 
+  //       whileHover={{ scale: 1.1, rotate: 90 }}
+  //       className="z-50 bg-white backdrop-blur-3xl border-2 border-sky-400 w-56 h-56 rounded-full flex flex-col items-center justify-center shadow-[0_0_80px_rgba(56,189,248,0.4)]"
+  //     >
+  //       <span className="text-sky-950 font-black italic text-5xl tracking-tighter">QUANT</span>
+  //       <div className="h-[2px] w-12 bg-sky-200 my-3" />
+  //       <span className="text-[10px] font-mono text-sky-600 uppercase tracking-[0.5em] font-bold">Nexus_OS</span>
+  //     </motion.div>
+  //     {orbits.map((orb, i) => (
+  //       <motion.div
+  //         key={i}
+  //         className="absolute border border-white/10 rounded-full"
+  //         animate={{ rotate: 360 }}
+  //         transition={{ duration: orb.speed, repeat: Infinity, ease: "linear" }}
+  //         style={{ width: orb.radius * 2, height: orb.radius * 2 }}
+  //       >
+  //         <motion.div 
+  //           className="bg-white px-4 py-1.5 rounded-full whitespace-nowrap text-[10px] font-mono font-black text-sky-900 shadow-xl border border-sky-100"
+  //           style={{ position: 'absolute', top: '50%', left: '-20px' }}
+  //           animate={{ rotate: -360 }}
+  //           transition={{ duration: orb.speed, repeat: Infinity, ease: "linear" }}
+  //         >
+  //           {orb.name}
+  //         </motion.div>
+  //       </motion.div>
+  //     ))}
+  //   </div>
+  // );
+
+  // return (
+  //   <div className="relative w-full h-[800px] flex items-center justify-center overflow-hidden [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]">
+  //     {/* Subtle Sky Glow instead of dark radial */}
+  //     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(56,189,248,0.15)_0%,_transparent_70%)]" />
+  
+  //     {/* Pulsing Core Waves */}
+  //     {[1.2, 1.5, 1.8].map((s, i) => (
+  //       <motion.div 
+  //         key={i}
+  //         animate={{ scale: [1, s], opacity: [0.3, 0] }}
+  //         transition={{ duration: 4, repeat: Infinity, delay: i * 1.3 }}
+  //         className="absolute border border-white/20 rounded-full w-[400px] h-[400px]"
+  //       />
+  //     ))}
+  
+  //     {/* Center Core */}
+  //     <motion.div 
+  //       whileHover={{ scale: 1.1, rotate: 90 }}
+  //       className="z-50 bg-white backdrop-blur-3xl border-2 border-sky-400 w-56 h-56 rounded-full flex flex-col items-center justify-center shadow-[0_0_80px_rgba(56,189,248,0.4)]"
+  //     >
+  //       <span className="text-sky-950 font-black italic text-5xl tracking-tighter">QUANT</span>
+  //       <div className="h-[2px] w-12 bg-sky-200 my-3" />
+  //       <span className="text-[10px] font-mono text-sky-600 uppercase tracking-[0.5em] font-bold">Nexus_OS</span>
+  //     </motion.div>
+  
+  //     {/* Orbits */}
+  //     {orbits.map((orb, i) => (
+  //       <motion.div
+  //         key={i}
+  //         className="absolute border border-white/10 rounded-full"
+  //         animate={{ rotate: 360 }}
+  //         transition={{ duration: orb.speed, repeat: Infinity, ease: "linear" }}
+  //         style={{ width: orb.radius * 2, height: orb.radius * 2 }}
+  //       >
+  //         <motion.div 
+  //           className="bg-white px-4 py-1.5 rounded-full whitespace-nowrap text-[10px] font-mono font-black text-sky-900 shadow-xl border border-sky-100"
+  //           style={{ position: 'absolute', top: '50%', left: '-20px' }}
+  //           animate={{ rotate: -360 }}
+  //           transition={{ duration: orb.speed, repeat: Infinity, ease: "linear" }}
+  //         >
+  //           {orb.name}
+  //         </motion.div>
+  //       </motion.div>
+  //     ))}
+  //   </div>
+  // );
   return (
-    <div className="relative w-full h-[800px] flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(56,189,248,0.2)_0%,_transparent_75%)]" />
-      {[1.2, 1.5, 1.8].map((s, i) => (
-        <motion.div 
-          key={i}
-          animate={{ scale: [1, s], opacity: [0.3, 0] }}
-          transition={{ duration: 4, repeat: Infinity, delay: i * 1.3 }}
-          className="absolute border border-white/20 rounded-full w-[400px] h-[400px]"
+    /* Removed h-[800px] and added py-20. Added overflow-visible so rings don't clip */
+    <div className="relative w-full py-32 flex items-center justify-center overflow-visible">
+      
+      {/* 1. NO DARK RADIANT HERE - Just a very faint sky-blue glow for depth */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(56,189,248,0.05)_0%,_transparent_70%)] pointer-events-none" />
+
+      {/* 2. Background Orbits - Reduced opacity to 0.05 so they are 'ghost' lines */}
+      {[...Array(12)].map((_, i) => (
+        <div 
+          key={`bg-ring-${i}`}
+          className="absolute border border-white/[0.05] rounded-full pointer-events-none"
+          style={{ width: (i + 2) * 100, height: (i + 2) * 100 }}
         />
       ))}
+
+      {/* 3. Pulsing Waves */}
+      {[1.2, 1.5].map((s, i) => (
+        <motion.div 
+          key={`pulse-${i}`}
+          animate={{ scale: [1, s], opacity: [0.2, 0] }}
+          transition={{ duration: 4, repeat: Infinity, delay: i * 2 }}
+          className="absolute border border-sky-400/20 rounded-full w-[400px] h-[400px]"
+        />
+      ))}
+
+      {/* 4. Center Core */}
       <motion.div 
-        whileHover={{ scale: 1.1, rotate: 90 }}
-        className="z-50 bg-white backdrop-blur-3xl border-2 border-sky-400 w-56 h-56 rounded-full flex flex-col items-center justify-center shadow-[0_0_80px_rgba(56,189,248,0.4)]"
+        whileHover={{ scale: 1.05 }}
+        className="z-50 bg-white backdrop-blur-3xl border-2 border-sky-400 w-56 h-56 rounded-full flex flex-col items-center justify-center shadow-[0_0_100px_rgba(56,189,248,0.4)]"
       >
         <span className="text-sky-950 font-black italic text-5xl tracking-tighter">QUANT</span>
         <div className="h-[2px] w-12 bg-sky-200 my-3" />
         <span className="text-[10px] font-mono text-sky-600 uppercase tracking-[0.5em] font-bold">Nexus_OS</span>
       </motion.div>
+
+      {/* 5. Rotating Labels */}
       {orbits.map((orb, i) => (
         <motion.div
           key={i}
-          className="absolute border border-white/10 rounded-full"
+          className="absolute border border-white/10 rounded-full pointer-events-none"
           animate={{ rotate: 360 }}
           transition={{ duration: orb.speed, repeat: Infinity, ease: "linear" }}
           style={{ width: orb.radius * 2, height: orb.radius * 2 }}
         >
           <motion.div 
-            className="bg-white px-4 py-1.5 rounded-full whitespace-nowrap text-[10px] font-mono font-black text-sky-900 shadow-xl border border-sky-100"
+            className="bg-white px-4 py-1.5 rounded-full whitespace-nowrap text-[10px] font-mono font-black text-sky-900 shadow-xl border border-sky-100 pointer-events-auto"
             style={{ position: 'absolute', top: '50%', left: '-20px' }}
             animate={{ rotate: -360 }}
             transition={{ duration: orb.speed, repeat: Infinity, ease: "linear" }}
@@ -162,6 +266,7 @@ const QuantNexus = () => {
       ))}
     </div>
   );
+ 
 };
 
 const TestimonialCarousel = () => {
@@ -201,9 +306,7 @@ const TestimonialCarousel = () => {
                <h4 className="font-black uppercase italic text-sky-400 mb-1">{testimonials[index].author}</h4>
                <p className="text-[11px] font-mono text-slate-400 uppercase tracking-widest mb-4">{testimonials[index].role}</p>
                <div className="h-px w-full bg-white/10 mb-4" />
-               {/* <div className="flex items-center gap-2 text-emerald-400 font-mono text-[10px] font-bold">
-                  <Zap size={12} /> {testimonials[index].metric}
-               </div> */}
+              
             </div>
           </motion.div>
         </AnimatePresence>
@@ -277,16 +380,11 @@ export default function Page() {
 
           {/* NAVIGATION */}
           <nav className="py-8 px-10 flex justify-between items-center bg-white/5 backdrop-blur-2xl border-b border-white/10 sticky top-[41px] z-[90]">
-            {/* <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-tr from-sky-400 to-blue-600 rounded-lg flex items-center justify-center font-black text-white">Q</div>
-              <span className="text-2xl font-black tracking-tighter italic uppercase text-white">Aqua</span>
-            </div> */}
+           
 
-<div className="flex items-center gap-3">
-  {/* "by" in white */}
-  <span className="text-white text-2xl font-medium  italic opacity-80">BY</span>
 
-  {/* The Logo Image */}
+<div className="flex items-center">
+ 
   <div className="relative w-8 h-8 flex items-center justify-center">
     <NextImage
       src={aqua_logo2} 
@@ -297,26 +395,29 @@ export default function Page() {
     />
   </div>
 
-  {/* "Lab" in Sky Blue and "AQUA" in White */}
+
   <div className="flex items-center">
-    <span className="text-2xl font-black tracking-tighter italic uppercase text-sky-400">
+   
+    <span className="text-2xl font-black tracking-tighter italic uppercase text-sky-400 ml-1">
       -Lab
     </span>
-    <span className="text-2xl font-black tracking-tighter italic uppercase text-white ml-1">
+
+   
+    <span className=" text-2xl font-medium italic opacity-40 mx-2 text-white">
+      BY
+    </span>
+
+    <span className="text-2xl font-black tracking-tighter italic uppercase text-white">
       AQUA
     </span>
   </div>
 </div>
-            {/* <div className="hidden lg:flex gap-10 text-[14px] font-mono uppercase tracking-[0.3em] text-sky-100 font-bold">
-              {['Notebooks', 'Questions', 'Subscription'].map(item => (
-                <a key={item} href="#" className="hover:text-white transition-colors">{item}</a>
-              ))}
-            </div> */}
+          
    <div className="hidden lg:flex gap-10 text-[14px] font-mono uppercase tracking-[0.3em] text-sky-100 font-bold">
   {['Notebooks', 'Questions', 'Subscription'].map((item) => {
     let href = "#";
     
-    // logic for session-based routing
+   
     if (item === 'Questions') {
       href = session ? "/dashboard" : "/auth/signin";
     } else if (item === 'Notebooks') {
@@ -332,7 +433,7 @@ export default function Page() {
         className="hover:text-sky-400 transition-colors cursor-pointer relative group"
       >
         {item}
-        {/* Optional: Subtle underline effect on hover to match your style */}
+       
         <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-sky-500 transition-all group-hover:w-full" />
       </Link>
     );
@@ -404,9 +505,7 @@ export default function Page() {
               <p className="text-sky-100/60 text-lg mb-12 max-w-2xl mx-auto font-light leading-relaxed italic">
                 The definitive simulation engine for quantitative finance interviews. Solve real problems exactly how top firms test candidates.Created by IIT-IIM Alumni. 
               </p>
-              {/* <div className="flex justify-center">
-                <button className="bg-white text-sky-950 px-12 py-5 rounded-2xl font-black uppercase text-sm tracking-widest shadow-xl">Start Solving</button>
-              </div> */}
+             
               <Link href={session ? "/dashboard" : "/auth/signin"}>
         <button className="bg-white text-sky-950 px-12 py-5 rounded-2xl font-black uppercase text-sm tracking-widest shadow-xl hover:scale-105 hover:bg-sky-400 hover:text-white transition-all duration-300">
           {session ? "Start Solving" : "Start Solving"}
@@ -414,20 +513,12 @@ export default function Page() {
       </Link>
           </section>
 
-          {/* ORBITAL NEXUS */}
-          {/* <section className="py-20 bg-white/5 border-y border-white/10">
-            <div className="text-center mb-[-100px] relative z-20">
-              <h2 className="text-xs font-mono text-sky-400 tracking-[1em] uppercase mb-4">Core Quant Topics</h2>
-              <h3 className="text-4xl font-black uppercase italic tracking-tighter">Interview Coverage</h3>
-            </div>
-            <QuantNexus />
-          </section> */}
-          {/* ORBITAL NEXUS */}
-<section className="relative py-32 overflow-hidden">
-  {/* Seamless Gradient Background */}
+      
+{/* <section className="relative py-32 overflow-hidden">
+
   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-sky-500/5 to-transparent pointer-events-none" />
   
-  {/* Optional: Radial glow to center the "Nexus" */}
+ 
   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-sky-500/10 rounded-full blur-[120px] pointer-events-none" />
 
   <div className="relative z-20 text-center mb-[-80px]">
@@ -442,7 +533,44 @@ export default function Page() {
   <div className="relative z-10">
     <QuantNexus />
   </div>
+</section> */}
+
+{/* <section className="relative py-32 overflow-hidden bg-transparent">
+ 
+  <div className="absolute inset-0 z-0">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-sky-500/5 blur-[120px] rounded-full pointer-events-none" />
+  </div>
+
+  <div className="relative z-20 text-center mb-[-80px]">
+    <h2 className="text-xs font-mono text-sky-400 tracking-[1em] uppercase mb-4 opacity-80">
+      Core Quant Topics
+    </h2>
+    <h3 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-white">
+      Interview Coverage
+    </h3>
+  </div>
+
+  <div className="relative z-10">
+    <QuantNexus />
+  </div>
+</section> */}
+
+<section className="relative pt-20 pb-40 bg-transparent overflow-visible">
+  {/* No extra gradient divs here - let the global background do the work */}
+  <div className="relative z-20 text-center">
+    <h2 className="text-xs font-mono text-sky-400 tracking-[1em] uppercase mb-4 opacity-80">
+      Core Quant Topics
+    </h2>
+    <h3 className="text-4xl md:text-7xl font-black uppercase italic tracking-tighter text-white">
+      Interview Coverage
+    </h3>
+  </div>
+
+  <div className="relative z-10 w-full mt-10">
+    <QuantNexus />
+  </div>
 </section>
+
 
           {/* ABOUT US */}
           <section className="py-40 px-6 bg-white overflow-hidden text-sky-950">
@@ -634,28 +762,7 @@ export default function Page() {
             </div>
           </section>
 
-          {/* DRILL */}
-          {/* <section className="py-40 px-6">
-             <div className="max-w-4xl mx-auto bg-gradient-to-r from-sky-400 to-blue-600 p-16 rounded-[60px] text-center shadow-2xl relative overflow-hidden">
-              <Zap className="text-white mx-auto mb-8 animate-bounce" size={48} />
-              <h2 className="text-4xl font-black mb-4 uppercase italic tracking-tight text-white">Quant Interview Drill</h2>
-              <p className="text-sky-100 text-[10px] font-mono uppercase tracking-[0.5em] mb-10">Problem_ID: QP-PROB-082</p>
-               <p className="text-white text-2xl font-bold mb-14 italic max-w-2xl mx-auto">"At least one of two dice is a 6. What is the probability the sum is 8?"</p>
-               <div className="flex flex-col gap-6 items-center">
-                 <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
-                 <input type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} className="bg-black/20 border border-white/20 rounded-2xl px-8 py-5 flex-1 font-mono text-white placeholder:text-sky-200 outline-none focus:border-white transition-all" placeholder="Enter (e.g. 2/11)" />
-                  <button className="bg-white text-sky-950 px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-sky-100 transition-colors shadow-2xl">Submit Answer</button>
-               </div>
-             
-               <Link href={session ? "/dashboard" : "/auth/signin"}>
-  <button className="flex items-center gap-3 text-white text-[10px] font-black uppercase tracking-[0.4em] opacity-60 hover:opacity-100 transition-opacity mt-4 border-b border-white/20 pb-1">
-    <Terminal size={12} /> 
-    {session ? "Go to Problem Set" : "Go to Problem Set"}
-  </button>
-</Link>
-              </div>
-            </div>
-           </section> */}
+         
            <section className="py-40 px-6">
       <div className="max-w-4xl mx-auto bg-gradient-to-r from-sky-400 to-blue-600 p-16 rounded-[60px] text-center shadow-2xl relative overflow-hidden">
         <Zap className="text-white mx-auto mb-8 animate-bounce" size={48} />
@@ -667,7 +774,7 @@ export default function Page() {
         </p>
         
         <p className="text-white text-2xl font-bold mb-14 italic max-w-2xl mx-auto min-h-[80px]">
-          "{drillQuestions[currentIdx].q}"
+          {drillQuestions[currentIdx].q}
         </p>
 
         <div className="flex flex-col gap-6 items-center">
@@ -746,37 +853,19 @@ export default function Page() {
 
         <div className="flex items-center gap-3 text-slate-400 mb-6 group">
           <Phone size={16} className="group-hover:text-sky-400 transition-colors" />
-          <span className="font-mono text-sm tracking-widest">+91 93307 22688</span>
+          <span className="font-mono text-sm tracking-widest">+91 9330722688</span>
         </div>
 
-        {/* <div className="flex flex-wrap gap-4">
-          {[
-            { Icon: Linkedin, href: "https://www.linkedin.com/company/aqua-advanced-quantitative-analytics-private-limited/" },
-            { Icon: Instagram, href: "https://www.instagram.com/theaquaedge" },
-            { Icon: Mail, href: "mailto:learn.finance@aqua.org.in" },
-            { Icon: Github, href: "#" },
-            { Icon: MessageCircle, href: "#" } 
-          ].map(({ Icon, href }, i) => (
-            <a 
-              key={i} 
-              href={href} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-slate-500 hover:text-sky-400 transition-all border border-white/5 hover:bg-white/10"
-            >
-              <Icon size={20} />
-            </a>
-          ))}
-        </div> */}
+       
         <div className="flex flex-wrap gap-4">
   {[
     { Icon: Linkedin, href: "https://www.linkedin.com/company/aqua-advanced-quantitative-analytics-private-limited/" },
     { Icon: Instagram, href: "https://www.instagram.com/theaquaedge" },
     { Icon: Mail, href: "mailto:learn.finance@aqua.org.in" },
-    { Icon: Github, href: "#" },
+    { Icon: Github, href: "https://github.com/ARFinsecProprietary/NIFTY-BANKNIFTY-FUTURES-Dashboard" },
     { 
       Icon: MessageCircle, 
-      // Replace 91XXXXXXXXXX with your actual number (e.g., 919876543210)
+      
       href: "https://wa.me/+919330722688?text=Hi%20Aqua%20Team,%20I%20have%20a%20query%20regarding..." 
     } 
   ].map(({ Icon, href }, i) => (
