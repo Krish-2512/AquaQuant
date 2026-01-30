@@ -292,7 +292,7 @@ const SubscriptionPage = () => {
         
         {/* NAVIGATION */}
         <nav className="py-8 px-10 flex justify-between items-center bg-white/5 backdrop-blur-2xl border-b border-white/10 sticky top-0 z-[100]">
-          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+          {/* <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <span className="text-2xl text-white font-medium italic opacity-80">BY</span>
             <div className="relative w-8 h-8 flex items-center justify-center">
               <NextImage src={aqua_logo2} alt="Aqua Logo" width={40} height={40} className="object-contain" />
@@ -301,7 +301,37 @@ const SubscriptionPage = () => {
               <span className="text-2xl font-black tracking-tighter italic uppercase text-sky-400">-Lab</span>
               <span className="text-2xl font-black tracking-tighter italic uppercase text-white ml-1">Aqua</span>
             </div>
-          </Link>
+          </Link> */}
+          <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
+  {/* The Logo Image */}
+  <div className="relative w-8 h-8 flex items-center justify-center">
+    <NextImage
+      src={aqua_logo2} 
+      alt="Aqua Logo" 
+      width={40} 
+      height={40} 
+      className="object-contain"
+    />
+  </div>
+
+  {/* Text Group */}
+  <div className="flex items-center">
+    {/* ml-1 keeps the lab identifier close to the icon */}
+    <span className="text-2xl font-black tracking-tighter italic uppercase text-sky-400 ml-1">
+      -Lab
+    </span>
+
+    {/* Reduced opacity and smaller spacing for the connector */}
+    <span className="text-2xl font-medium italic opacity-40 mx-2 text-white">
+      BY
+    </span>
+
+    {/* Primary Brand Name */}
+    <span className="text-2xl font-black tracking-tighter italic uppercase text-white">
+      AQUA
+    </span>
+  </div>
+</Link>
 
           {/* DYNAMIC NAVIGATION LINKS */}
           <div className="hidden lg:flex gap-10 text-[14px] font-mono uppercase tracking-[0.3em] text-sky-100 font-bold">
