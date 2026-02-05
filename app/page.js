@@ -696,7 +696,7 @@ export default function Page() {
           </section>
 
           {/* STANDARDS */}
-          <section className="py-40 px-6 max-w-7xl mx-auto">
+          {/* <section className="py-40 px-6 max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-3 gap-12 text-white">
               <div className="lg:col-span-2 text-left">
                  <h2 className="text-6xl font-black uppercase italic mb-8 tracking-tighter leading-[0.9]">Universal <br/> Standards</h2>
@@ -710,7 +710,28 @@ export default function Page() {
                  <p className="text-2xl font-black leading-tight italic text-white">"We don't train traders. We train quant thinkers."</p>
               </div>
             </div>
-          </section>
+          </section> */}
+
+<section className="py-40 px-6 max-w-7xl mx-auto">
+  <div className="grid lg:grid-cols-3 gap-12 text-white">
+    <div className="lg:col-span-2 text-left">
+      <h2 className="text-6xl font-black uppercase italic mb-8 tracking-tighter leading-[0.9]">Universal <br/> Standards</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        {["Probability", "Statistics", "Puzzles", "Quant Coding", "Linear Algebra", "Stochastic Processes","Mental Maths"].map(topic => (
+          /* Wrapped the topic in your requested Link format */
+          <Link key={topic} href={session ? "/dashboard" : "/auth/signin"}>
+            <div className="p-5 border border-white/10 bg-white/5 rounded-2xl text-[10px] font-mono text-sky-400 uppercase tracking-widest hover:border-sky-400/50 transition-colors cursor-pointer h-full">
+              {topic}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+    <div className="bg-gradient-to-br from-sky-500 to-blue-700 p-10 rounded-[40px] shadow-2xl text-left flex flex-col justify-center border border-white/20">
+      <p className="text-2xl font-black leading-tight italic text-white">"We don't train traders. We train quant thinkers."</p>
+    </div>
+  </div>
+</section>
 
           {/* NOTEBOOK */}
           <section className="py-32 border-y border-white/5">
