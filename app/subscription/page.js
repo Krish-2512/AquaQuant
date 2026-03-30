@@ -409,11 +409,26 @@ const SubscriptionPage = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <h2 className="text-sky-400 font-mono text-[10px] tracking-[0.8em] uppercase mb-4 font-black">Subscription_Model_v2.6</h2>
             <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic mb-8">
-              Unlock the <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-white">Edge.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-white">Cohort</span>
             </h1>
             <p className="text-sky-100/60 max-w-2xl mx-auto font-light leading-relaxed italic text-lg">
               Access the complete vault of probability drills, stochastic calculus masterclasses, and our elite institutional talent pipeline.
             </p>
+            {/* ✅ QR CODE ADDED */}
+<div className="mt-12 flex flex-col items-center gap-4">
+  <div className="p-4 bg-white rounded-2xl shadow-xl">
+    <NextImage 
+      src="/qr.jpeg" 
+      alt="QR Code"
+      width={180}
+      height={180}
+      className="object-contain"
+    />
+  </div>
+  <p className="text-xs text-sky-400 font-mono uppercase tracking-widest">
+    Scan to join cohort
+  </p>
+</div>
           </motion.div>
         </section>
 
