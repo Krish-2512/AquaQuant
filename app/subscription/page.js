@@ -244,37 +244,41 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useSession, signOut } from "next-auth/react";
 
 const SubscriptionPage = () => {
+  const [expanded, setExpanded] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false); // Added for dropdown logic
   const { data: session, status } = useSession();
 
   const plans = [
-    {
-      name: "Quant Starter",
-      price: "0",
-      description: "Perfect for beginners getting a feel for the terminal.",
-      features: ["5 Practice Problems/day", "Basic Finance Theory", "Public Notebook Access", "Community Forum"],
-      icon: <Zap className="text-sky-400" size={24} />,
-      buttonText: "Current Plan",
-      highlight: false
-    },
-    {
-      name: "Pro Trader",
-      price: "500",
-      description: "Comprehensive coverage for top-tier firm interviews.",
-      features: ["Unlimited Practice Problems", "IIT-IIM Curated Puzzles", "Private Notebook Storage", "Probability & Stats Deep-dive", "Priority Support"],
-      icon: <Rocket className="text-blue-400" size={24} />,
-      buttonText: "Upgrade to Pro",
-      highlight: true
-    },
-    {
-      name: "Elite Institutional",
-      price: "1000",
-      description: "Advanced terminal access for serious candidates.",
-      features: ["Verified Talent Pipeline", "1-on-1 Portfolio Review", "Mock Interview Simulations", "Enterprise Dataset Access", "All Premium Solvers"],
-      icon: <Crown className="text-yellow-400" size={24} />,
-      buttonText: "Go Elite",
-      highlight: false
-    }
+  {
+    name: "Partner Institute",
+    price: "5000",
+    description: "For students from AQUA partner institutes.",
+    features: [
+      "Full Cohort Access",
+      "Live Weekend Sessions",
+      "Mentorship from IIT-IIM Alumni",
+      "Capstone Project",
+      "Internship Certificate"
+    ],
+    icon: <Zap className="text-sky-400" size={24} />,
+    buttonText: "Apply Now",
+    highlight: true
+  },
+  {
+    name: "General Access",
+    price: "6000",
+    description: "For all other students.",
+    features: [
+      "Full Cohort Access",
+      "Live Weekend Sessions",
+      "Mentorship from IIT-IIM Alumni",
+      "Capstone Project",
+      "Internship Certificate"
+    ],
+    icon: <Rocket className="text-blue-400" size={24} />,
+    buttonText: "Apply Now",
+    highlight: false
+  }
   ];
 
   return (
@@ -411,11 +415,46 @@ const SubscriptionPage = () => {
             <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic mb-8">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-white">Cohort</span>
             </h1>
-            <p className="text-sky-100/60 max-w-2xl mx-auto font-light leading-relaxed italic text-lg">
-              Access the complete vault of probability drills, stochastic calculus masterclasses, and our elite institutional talent pipeline.
-            </p>
-            {/* ✅ QR CODE ADDED */}
-<div className="mt-12 flex flex-col items-center gap-4">
+            <div className="text-sky-100/60 max-w-3xl mx-auto font-light leading-relaxed italic text-sm md:text-base space-y-4">
+
+                  <p>
+                    The Quantitative Finance Research Cohort – Season 2 by AQUA is a three-month, mentorship-driven program designed for students who want to build a strong foundation in quantitative finance and move towards careers in trading, financial research, and top finance firms. Starting on 14th April, the cohort offers live, interactive weekend sessions that are structured to take participants from the basics to working on real-world quant problems.
+                  </p>
+
+                  {expanded && (
+                    <>
+                      <p>
+                        Throughout the program, students will receive personalized guidance from IIT-IIM alumni, industry professionals, and experienced quants. The learning experience includes structured training, regular doubt-solving sessions, monthly masterclasses with professionals from leading global finance firms, and a hands-on capstone project that reflects real industry challenges. Participants will also receive a three-month internship certificate from AQUA along with co-certification from finance and quant cells of top IITs.
+                      </p>
+                
+                      <p>
+                        Students interested in quantitative finance, trading, or financial research, and those aiming to break into top quant and finance roles are encouraged to apply. To participate, fill out the pre-registration form at{" "}
+                        <a 
+                          href="https://forms.gle/LHk7KFuCUcXdPQdv5"
+                          target="_blank"
+                          className="text-sky-400 underline hover:text-white transition-colors"
+                        >
+                          https://forms.gle/LHk7KFuCUcXdPQdv5
+                        </a>. Based on the responses, selected candidates will receive the final enrollment link on 2nd April.
+                      </p>
+                
+                      <p>
+                        The curriculum is designed to give a complete and practical understanding of quantitative finance. It begins with the fundamentals of financial markets, derivatives, and risk management, and gradually moves into core quantitative areas such as probability, statistics, linear algebra, time series analysis, and machine learning applications. As outlined in the curriculum document, students also explore advanced topics like option pricing models (including Black-Scholes), stochastic calculus, volatility modelling, and interest rate modelling. The program emphasizes real-world application through quantitative trading strategies, backtesting frameworks, and two major capstone project options such as volatility arbitrage or neural stochastic differential equation-based risk modelling. In addition to technical learning, the cohort includes one-on-one mentorship, code and model reviews, resume workshops, mock interviews, and guidance on building a strong GitHub portfolio to support placements in quant and finance roles.
+                      </p>
+                    </>
+                  )}
+
+                  {/* BUTTON */}
+                  <button
+                    onClick={() => setExpanded(!expanded)}
+                    className="mt-4 text-sky-400 font-mono text-xs uppercase tracking-widest hover:text-white transition-colors"
+                  >
+                    {expanded ? "Show Less ▲" : "Read More ▼"}
+                  </button>
+                
+                </div>
+                {/* ✅ QR CODE ADDED */}
+                <div className="mt-12 flex flex-col items-center gap-4">
   <div className="p-4 bg-white rounded-2xl shadow-xl">
     <NextImage 
       src="/qr.jpeg" 
@@ -428,13 +467,13 @@ const SubscriptionPage = () => {
   <p className="text-xs text-sky-400 font-mono uppercase tracking-widest">
     Scan to join cohort
   </p>
-</div>
+                </div>
           </motion.div>
         </section>
 
         {/* PRICING GRID */}
         <section className="max-w-7xl mx-auto px-6 py-24">
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {plans.map((plan, i) => (
               <motion.div 
                 key={i} 
@@ -442,17 +481,8 @@ const SubscriptionPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 whileHover={{ y: -10 }}
-                className={`relative p-10 rounded-[45px] border transition-all duration-500 flex flex-col ${
-                  plan.highlight 
-                  ? 'border-sky-400 bg-sky-500/10 shadow-[0_0_60px_-15px_rgba(56,189,248,0.4)] backdrop-blur-xl' 
-                  : 'border-white/10 bg-white/5 backdrop-blur-md'
-                }`}
+                className="relative p-10 rounded-[45px] border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-500 flex flex-col hover:-translate-y-2"
               >
-                {plan.highlight && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-sky-400 text-sky-950 text-[9px] font-mono px-6 py-1.5 rounded-full uppercase tracking-[0.3em] font-black shadow-xl">
-                    Most Popular
-                  </div>
-                )}
                 
                 <div className="mb-8">
                   <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8">
@@ -465,7 +495,7 @@ const SubscriptionPage = () => {
                 <div className="mb-12">
                   <div className="flex items-baseline gap-2">
                     <span className="text-5xl font-black italic">₹{plan.price}</span>
-                    <span className="text-sky-400 font-mono text-[10px] uppercase tracking-widest font-bold">/ Yearly</span>
+                    <span className="text-sky-400 font-mono text-[10px] uppercase tracking-widest font-bold">+ GST</span>
                   </div>
                 </div>
 
