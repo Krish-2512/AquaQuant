@@ -270,6 +270,14 @@ export default function SubscriptionPage() {
                     View Fees
                     <ChevronRight size={16} />
                   </a>
+                  <a
+                    href="/cohort-curriculum.pdf"
+                    download
+                    className="inline-flex items-center gap-3 rounded-full border border-sky-400/20 bg-sky-500/10 px-7 py-4 text-[11px] font-black uppercase tracking-[0.28em] text-sky-100 transition-all hover:border-sky-300/40 hover:bg-sky-500/20 hover:text-white"
+                  >
+                    Download Curriculum
+                    <FileText size={16} />
+                  </a>
                 </div>
 
                 <div className="mt-10 grid gap-4 sm:grid-cols-3">
