@@ -1,174 +1,101 @@
-
-
-
-
-
-
-
-// import NextAuth from "next-auth";
-// import GoogleProvider from "next-auth/providers/google";
-// import { MongoDBAdapter } from "@auth/mongodb-adapter";
-// import clientPromise from "@/lib/mongodb"; // We will create this file next
-
-// const handler = NextAuth({
-//   adapter: MongoDBAdapter(clientPromise),
-//   providers: [
-//     GoogleProvider({
-//       clientId: process.env.GOOGLE_CLIENT_ID,
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//     }),
-//   ],
-//   secret: process.env.NEXTAUTH_SECRET,
-//   session: {
-//     strategy: "jwt", // Keeping JWT as you requested
-//   },
-//   pages: {
-//     signIn: "/auth/signin",
-//   },
-//   callbacks: {
-//     async session({ session, token }) {
-//       // Passes the MongoDB user ID to the client side
-//       if (session.user && token.sub) {
-//         session.user.id = token.sub;
-//       }
-//       return session;
-//     },
-//     async redirect({ url, baseUrl }) {
-//       // If signing out or at base, go home
-//       if (url === baseUrl || url.includes("/auth/signin")) {
-//         return baseUrl;
-//       }
-//       // Default success redirect
-//       return `${baseUrl}/dashboard`;
-//     },
-//   },
-// });
-
-// export { handler as GET, handler as POST };
-
-
-
-
-
-
-
-
-
-
-
-
-
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/User";
+import { logError, logWarn } from "@/lib/logger";
+import { env } from "@/lib/env";
 
-const handler = NextAuth({
+export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      allowDangerousEmailAccountLinking: true,
+      clientId: env.googleClientId,
+      clientSecret: env.googleClientSecret,
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: env.nextAuthSecret,
+  trustHost: true,
   session: {
-    strategy: "jwt", 
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 24 * 60 * 60,
   },
   pages: {
     signIn: "/auth/signin",
   },
   callbacks: {
-    // async jwt({ token, user, trigger }) {
-    //   // 1. When user first logs in, initialize their custom fields in the DB
-    //   if (user) {
-    //     await dbConnect();
-    //     const dbUser = await User.findById(user.id);
-        
-    //     // If it's a new user from the adapter, add our custom tracking fields
-    //     if (dbUser && !dbUser.categoryStats) {
-    //       dbUser.categoryStats = {
-    //         probability: { attempted: 0, correct: 0 },
-    //         brainteaser: { attempted: 0, correct: 0 },
-    //         finance: { attempted: 0, correct: 0 },
-    //         statistics: { attempted: 0, correct: 0 },
-    //         coding: { attempted: 0, correct: 0 }
-    //       };
-    //       dbUser.university = "Not Specified";
-    //       await dbUser.save();
-    //     }
-    //     token.id = user.id;
-    //   }
-    //   return token;
-    // },
-
-    // async session({ session, token }) {
-    //   // 2. Expose the User ID and custom data to the frontend
-    //   if (session.user && token.id) {
-    //     session.user.id = token.id;
-        
-    //     // Fetch fresh data for the session (university, etc)
-    //     await dbConnect();
-    //     const dbUser = await User.findById(token.id).lean();
-    //     if (dbUser) {
-    //       session.user.university = dbUser.university;
-    //       session.user.totalAttempted = dbUser.totalAttempted;
-    //     }
-    //   }
-    //   return session;
-    // },
-
-
-    // Inside callbacks:
-async jwt({ token, user }) {
-  if (user) {
-    token.id = user.id;
-    try {
-      await dbConnect();
-      const dbUser = await User.findById(user.id);
-      if (dbUser && !dbUser.categoryStats) {
-        dbUser.categoryStats = {
-          probability: { attempted: 0, correct: 0 },
-          brainteaser: { attempted: 0, correct: 0 },
-          finance: { attempted: 0, correct: 0 },
-          statistics: { attempted: 0, correct: 0 },
-          coding: { attempted: 0, correct: 0 }
-        };
-        await dbUser.save();
+    async signIn({ profile }) {
+      if (!profile?.email) {
+        logWarn("Auth sign-in rejected: missing email");
+        return false;
       }
-    } catch (e) {
-      console.error("Auth: DB initialization skipped during build/runtime error", e);
-    }
-  }
-  return token;
-},
 
-async session({ session, token }) {
-  if (session.user && token.id) {
-    session.user.id = token.id;
-    try {
-      await dbConnect();
-      const dbUser = await User.findById(token.id).lean();
-      if (dbUser) {
-        session.user.university = dbUser.university;
+      if ("email_verified" in (profile || {}) && !profile.email_verified) {
+        logWarn("Auth sign-in rejected: unverified email", {
+          email: profile.email,
+        });
+        return false;
       }
-    } catch (e) {
-      console.error("Auth: Session DB fetch skipped", e);
-    }
-  }
-  return session;
-},
+
+      return true;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        try {
+          await dbConnect();
+          const dbUser = await User.findById(user.id).select("university categoryStats");
+          if (dbUser && !dbUser.categoryStats) {
+            dbUser.categoryStats = {
+              probability: { attempted: 0, correct: 0 },
+              brainteaser: { attempted: 0, correct: 0 },
+              finance: { attempted: 0, correct: 0 },
+              statistics: { attempted: 0, correct: 0 },
+              coding: { attempted: 0, correct: 0 }
+            };
+            await dbUser.save();
+          }
+
+          token.university = dbUser?.university || "Not Specified";
+        } catch (error) {
+          logError("Auth JWT initialization failed", error, {
+            userId: user.id,
+          });
+        }
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token.id) {
+        session.user.id = token.id;
+        session.user.university = token.university || "Not Specified";
+      }
+
+      return session;
+    },
     async redirect({ url, baseUrl }) {
-      // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+
+      try {
+        const parsedUrl = new URL(url);
+        if (parsedUrl.origin === baseUrl) {
+          return url;
+        }
+      } catch (error) {
+        logError("Auth redirect parsing failed", error, { url, baseUrl });
+        return `${baseUrl}/dashboard`;
+      }
+
+      return `${baseUrl}/dashboard`;
     },
   },
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

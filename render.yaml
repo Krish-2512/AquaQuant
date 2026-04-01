@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: aqua-quant-app
+    runtime: node
+    plan: starter
+    region: singapore
+    autoDeploy: true
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health

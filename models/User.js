@@ -4,7 +4,7 @@ const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   university: { type: String, default: 'Not Specified' },
-  image: { type: String }, // For Google/Github profile pics
+  image: { type: String }, // For Google profile pics
   
   // High-level Progress
   totalAttempted: { type: Number, default: 0 },
@@ -54,5 +54,8 @@ const UserSchema = new mongoose.Schema({
     }]
   }]
 }, { timestamps: true });
+
+UserSchema.index({ "questionProgress.questionId": 1 });
+UserSchema.index({ "codingProgress.codingQuestionId": 1 });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);

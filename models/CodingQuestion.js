@@ -22,4 +22,7 @@ solutionCode: {
   
 }, { timestamps: true });
 
+CodingQuestionSchema.index({ category: 1, difficulty: 1, createdAt: -1 });
+CodingQuestionSchema.index({ title: 1 });
+
 export default mongoose.models.CodingQuestion || mongoose.model('CodingQuestion', CodingQuestionSchema);

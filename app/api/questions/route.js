@@ -94,6 +94,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from "@/lib/dbConnect";
 import Question from "@/models/Question";
+import { buildQuestionFilters, normalizeQuestionDoc } from "@/lib/questions";
 
 export async function GET(request) {
   try {
@@ -105,37 +106,32 @@ export async function GET(request) {
     const limit = 10;
     const skip = (page - 1) * limit;
 
-    const query = {};
     const cat = searchParams.get('category');
     const diff = searchParams.get('difficulty');
     const stat = searchParams.get('status');
     const search = searchParams.get('search');
-
-    // --- FILTER LOGIC (PascalCase to match your DB) ---
-    if (cat && cat !== 'All') query.Category = cat;
-    if (diff && diff !== 'All') query.Difficulty = diff;
-    if (stat && stat !== 'All') query.Status = stat;
-
-    // --- SEARCH LOGIC (Title OR CompanyTags) ---
-    if (search) {
-      query.$or = [
-        { Title: { $regex: search, $options: 'i' } },
-        { CompanyTags: { $regex: search, $options: 'i' } }
-      ];
-    }
+    const query = buildQuestionFilters({
+      category: cat,
+      difficulty: diff,
+      status: stat,
+      search,
+    });
 
     // 2. FETCH TOTAL COUNT & PAGINATED DATA
-    const total = await Question.countDocuments(query);
+    const total = await Question.collection.countDocuments(query);
     
-    const questions = await Question.find(query)
-      .select('Title Content Category Difficulty Status CompanyTags Answer Solution RelatedTopics CreatedAt _id')
-      .sort({ CreatedAt: -1 }) // Matches your schema's timestamp key
+    const questions = await Question.collection
+      .find(query)
+      .sort({ createdAt: -1, CreatedAt: -1 })
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .toArray();
+
+    const normalizedQuestions = questions.map((question) => normalizeQuestionDoc(question));
 
     return NextResponse.json({ 
       success: true, 
-      data: questions,
+      data: normalizedQuestions,
       pagination: {
         total,
         page,

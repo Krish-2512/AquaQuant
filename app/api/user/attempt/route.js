@@ -1,126 +1,103 @@
-
-
-// import { NextResponse } from 'next/server';
-// import { getServerSession } from "next-auth/next";
-// import dbConnect from "@/lib/dbConnect";
-// import User from "@/models/User";
-// import Question from "@/models/Question"; // Added this import
-
-// export async function POST(req) {
-//   try {
-//     await dbConnect();
-//     const session = await getServerSession();
-//     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-//     const { questionId, isCorrect, submissionText } = await req.json();
-//     if (!questionId) return NextResponse.json({ error: "Missing ID" }, { status: 400 });
-
-//     const user = await User.findOne({ email: session.user.email });
-    
-//     // 1. FETCH THE QUESTION TO GET THE TRUE CATEGORY
-//     const questionDoc = await Question.findById(questionId);
-//     if (!questionDoc) return NextResponse.json({ error: "Question not found" }, { status: 404 });
-
-//     // 2. MAP CATEGORY TO YOUR USER SCHEMA KEYS
-//     // Your Question Schema has: 'Probability', 'Statistics', 'BrainTeasers', 'Finance', 'Coding'
-//     // Your User Schema has: 'probability', 'brainteaser', 'finance', 'statistics', 'coding'
-//     const dbCat = questionDoc.category; 
-//     let catKey = null;
-
-//     if (dbCat === 'Probability') catKey = 'probability';
-//     if (dbCat === 'BrainTeasers') catKey = 'brainteaser'; // Map plural to singular
-//     if (dbCat === 'Statistics') catKey = 'statistics';
-//     if (dbCat === 'Finance') catKey = 'finance';
-//     if (dbCat === 'Coding') catKey = 'coding';
-
-//     const now = new Date();
-//     const historyEntry = {
-//       fileName: `Answer Submitted: ${submissionText || "Value entered"}`,
-//       uploadedAt: now
-//     };
-
-//     let progress = user.questionProgress.find(p => p.questionId && p.questionId.toString() === questionId.toString());
-
-//     if (!progress) {
-//       progress = {
-//         questionId,
-//         status: 'Unattempted',
-//         attemptsCount: 0,
-//         attachments: []
-//       };
-//       user.questionProgress.push(progress);
-//       progress = user.questionProgress[user.questionProgress.length - 1];
-//     }
-
-//     // 3. STATS LOGIC: Update attempted counts
-//     if (progress.attemptsCount === 0) {
-//       user.totalAttempted += 1;
-//       // Use catKey to update the specific nested object in UserSchema
-//       if (catKey && user.categoryStats[catKey]) {
-//         user.categoryStats[catKey].attempted += 1;
-//       }
-//     }
-
-//     progress.attemptsCount += 1;
-//     progress.lastAttempted = now;
-//     progress.attachments.push(historyEntry);
-
-//     // 4. STATUS LOGIC
-//     if (isCorrect) {
-//       if (progress.status !== 'Solved') {
-//         user.totalCorrect += 1;
-//         if (catKey && user.categoryStats[catKey]) {
-//           user.categoryStats[catKey].correct += 1;
-//         }
-//         progress.status = 'Solved';
-//       }
-//     } else {
-//       if (progress.status !== 'Solved') {
-//         progress.status = 'Attempted';
-//       }
-//     }
-
-//     // 5. SAVE WITH EXPLICIT MODIFICATION TAGS
-//     user.markModified('questionProgress');
-//     user.markModified('categoryStats');
-    
-//     // Important: mark individual nested objects if they are deeply nested
-//     if (catKey) {
-//       user.markModified(`categoryStats.${catKey}`);
-//     }
-
-//     await user.save();
-
-//     return NextResponse.json({ success: true, status: progress.status });
-//   } catch (error) {
-//     console.error("API Error:", error);
-//     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
-//   }
-// }
-
-
 import { NextResponse } from 'next/server';
 import { getServerSession } from "next-auth/next";
+import mongoose from "mongoose";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/User";
 import Question from "@/models/Question";
-import CodingQuestion from "@/models/CodingQuestion"; // Import Coding model
+import CodingQuestion from "@/models/CodingQuestion";
+import { enforceRateLimit } from "@/lib/rateLimit";
+import { buildRequestMeta, logError, logWarn } from "@/lib/logger";
+
+const ALLOWED_LANGUAGES = new Set(["javascript", "python", "typescript"]);
+const MAX_SUBMISSION_TEXT_LENGTH = 5000;
+const MAX_SUBMITTED_CODE_LENGTH = 20000;
+
+function getCategoryKey(category) {
+  if (category === 'Probability') return 'probability';
+  if (category === 'BrainTeasers') return 'brainteaser';
+  if (category === 'Statistics') return 'statistics';
+  if (category === 'Finance') return 'finance';
+  if (category === 'Coding' || category?.toLowerCase?.() === 'coding') return 'coding';
+  return null;
+}
 
 export async function POST(req) {
   try {
-    await dbConnect();
     const session = await getServerSession();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    const { questionId, isCorrect, submissionText, submittedCode, language, isCoding } = await req.json();
-    if (!questionId) return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+    const rateLimit = await enforceRateLimit("attempt", session.user.email, {
+      limit: 30,
+      window: "1 m",
+    });
+
+    if (!rateLimit.allowed) {
+      logWarn(
+        "Submission attempt rate limit exceeded",
+        buildRequestMeta(req, { userEmail: session.user.email })
+      );
+      return NextResponse.json(
+        { error: "Too many submission attempts. Please wait a moment and try again." },
+        { status: 429 }
+      );
+    }
+
+    const body = await req.json();
+    const questionId = typeof body.questionId === "string" ? body.questionId.trim() : "";
+    const isCorrect = typeof body.isCorrect === "boolean" ? body.isCorrect : null;
+    const submissionText = typeof body.submissionText === "string" ? body.submissionText.trim() : "";
+    const submittedCode = typeof body.submittedCode === "string" ? body.submittedCode : "";
+    const language = typeof body.language === "string" ? body.language.trim().toLowerCase() : "javascript";
+    const isCoding = Boolean(body.isCoding);
+
+    if (!questionId) {
+      return NextResponse.json({ error: "Missing question id." }, { status: 400 });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(questionId)) {
+      return NextResponse.json({ error: "Invalid question id." }, { status: 400 });
+    }
+
+    if (isCorrect === null) {
+      return NextResponse.json({ error: "Missing correctness flag." }, { status: 400 });
+    }
+
+    if (submissionText.length > MAX_SUBMISSION_TEXT_LENGTH) {
+      return NextResponse.json({ error: "Submission text is too long." }, { status: 400 });
+    }
+
+    if (submittedCode.length > MAX_SUBMITTED_CODE_LENGTH) {
+      return NextResponse.json({ error: "Submitted code is too large." }, { status: 400 });
+    }
+
+    if (isCoding && !submittedCode.trim()) {
+      return NextResponse.json({ error: "Submitted code is required for coding attempts." }, { status: 400 });
+    }
+
+    if (isCoding && !ALLOWED_LANGUAGES.has(language)) {
+      return NextResponse.json({ error: "Unsupported language." }, { status: 400 });
+    }
+
+    await dbConnect();
 
     const user = await User.findOne({ email: session.user.email });
+    if (!user) {
+      return NextResponse.json({ error: "User not found." }, { status: 404 });
+    }
+
     const now = new Date();
 
-    // --- CASE 1: CODING QUESTION LOGIC ---
     if (isCoding) {
-      let progress = user.codingProgress.find(p => p.codingQuestionId?.toString() === questionId.toString());
+      const codingQuestion = await CodingQuestion.findById(questionId).select('_id').lean();
+      if (!codingQuestion) {
+        return NextResponse.json({ error: "Coding question not found." }, { status: 404 });
+      }
+
+      let progress = user.codingProgress.find(
+        (entry) => entry.codingQuestionId?.toString() === questionId
+      );
 
       if (!progress) {
         progress = {
@@ -133,22 +110,18 @@ export async function POST(req) {
         progress = user.codingProgress[user.codingProgress.length - 1];
       }
 
-      // Stats: Global and Category
       user.totalAttempted += 1;
       user.categoryStats.coding.attempted += 1;
-      
+
       progress.attemptsCount += 1;
       progress.lastAttempted = now;
-
-      // History Entry
       progress.pastSubmissions.push({
         code: submittedCode,
-        language: language || 'javascript',
-        isCorrect: isCorrect,
+        language,
+        isCorrect,
         submittedAt: now
       });
 
-      // Status Logic
       if (isCorrect) {
         if (progress.status !== 'solved') {
           user.totalCorrect += 1;
@@ -162,26 +135,24 @@ export async function POST(req) {
       user.markModified('codingProgress');
       user.markModified('categoryStats.coding');
       await user.save();
+
       return NextResponse.json({ success: true, status: progress.status });
     }
 
-    // --- CASE 2: STANDARD QUESTION LOGIC (Your Original Code) ---
-    const questionDoc = await Question.findById(questionId);
-    if (!questionDoc) return NextResponse.json({ error: "Question not found" }, { status: 404 });
+    const questionDoc = await Question.findById(questionId).select('_id category Category').lean();
+    if (!questionDoc) {
+      return NextResponse.json({ error: "Question not found" }, { status: 404 });
+    }
 
-    const dbCat = questionDoc.category; 
-    let catKey = null;
-    if (dbCat === 'Probability') catKey = 'probability';
-    if (dbCat === 'BrainTeasers') catKey = 'brainteaser'; 
-    if (dbCat === 'Statistics') catKey = 'statistics';
-    if (dbCat === 'Finance') catKey = 'finance';
-
+    const catKey = getCategoryKey(questionDoc.category || questionDoc.Category || "");
     const historyEntry = {
       fileName: `Answer Submitted: ${submissionText || "Value entered"}`,
       uploadedAt: now
     };
 
-    let progress = user.questionProgress.find(p => p.questionId?.toString() === questionId.toString());
+    let progress = user.questionProgress.find(
+      (entry) => entry.questionId?.toString() === questionId
+    );
 
     if (!progress) {
       progress = {
@@ -219,13 +190,14 @@ export async function POST(req) {
 
     user.markModified('questionProgress');
     user.markModified('categoryStats');
-    if (catKey) user.markModified(`categoryStats.${catKey}`);
+    if (catKey) {
+      user.markModified(`categoryStats.${catKey}`);
+    }
 
     await user.save();
     return NextResponse.json({ success: true, status: progress.status });
-
   } catch (error) {
-    console.error("API Error:", error);
+    logError("User attempt route failed", error, buildRequestMeta(req));
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }

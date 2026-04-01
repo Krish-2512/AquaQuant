@@ -5,12 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "node .next/standalone/server.js",
     "lint": "eslint"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.1",
     "@monaco-editor/react": "^4.7.0",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.37.0",
     "axios": "^1.13.3",
     "dotenv": "^17.2.3",
     "framer-motion": "^12.24.10",

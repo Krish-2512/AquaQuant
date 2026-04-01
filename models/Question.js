@@ -34,6 +34,11 @@ const QuestionSchema = new mongoose.Schema({
   timestamps: true 
 });
 
+QuestionSchema.index({ title: 1 }, { unique: true });
+QuestionSchema.index({ category: 1, difficulty: 1, createdAt: -1 });
+QuestionSchema.index({ status: 1, createdAt: -1 });
+QuestionSchema.index({ companyTags: 1 });
+
 export default mongoose.models.Question || mongoose.model('Question', QuestionSchema);
 
 

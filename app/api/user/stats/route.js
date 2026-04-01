@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth/next";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/User";
 import Question from "@/models/Question";
+import { normalizeQuestionDoc } from "@/lib/questions";
+import mongoose from "mongoose";
 
 export async function GET() {
   try {
@@ -23,7 +25,12 @@ export async function GET() {
     
 
     // .lean() is KEY here. It returns raw JSON, bypassing schema restrictions.
-    const solvedDocs = await Question.find({ _id: { $in: solvedIds } }).lean();
+    const validSolvedIds = solvedIds.filter((id) => mongoose.Types.ObjectId.isValid(id));
+    const solvedDocs = validSolvedIds.length
+      ? await Question.collection
+          .find({ _id: { $in: validSolvedIds.map((id) => new mongoose.Types.ObjectId(id)) } })
+          .toArray()
+      : [];
 
     const dynamicStats = {
       probability: 0,
@@ -33,15 +40,8 @@ export async function GET() {
     };
 
     solvedDocs.forEach(doc => {
-      // 1. Log the full doc to your terminal to see the actual keys
-      console.log("FULL DOC KEYS:", Object.keys(doc));
-      
-      // 2. Try to find the category regardless of casing
-      const rawCat = (doc.category || doc.Category || doc.topic || "").toString().trim();
-      console.log("Found Raw Category Value:", rawCat);
-
-      // 3. Robust matching (matches 'BrainTeasers', 'brainteasers', 'brainteaser')
-      const cat = rawCat.toLowerCase();
+      const normalizedDoc = normalizeQuestionDoc(doc);
+      const cat = (normalizedDoc?.category || "").toLowerCase();
       if (cat.includes('probabilit')) dynamicStats.probability++;
       else if (cat.includes('brainteaser')) dynamicStats.brainteasers++; 
       else if (cat.includes('statist')) dynamicStats.statistics++;
