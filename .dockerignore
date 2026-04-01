@@ -1,0 +1,8 @@
+.git
+.gitignore
+.next
+node_modules
+.env.local
+npm-debug.log
+README.md
+AQUA_Change_Summary_2026-04-01.pdf
