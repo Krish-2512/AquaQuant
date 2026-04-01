@@ -5,7 +5,7 @@ WORKDIR /app
 
 FROM base AS deps
 COPY package.json package-lock.json ./
-RUN npm install --include=optional
+RUN npm install --include=dev --include=optional
 
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
