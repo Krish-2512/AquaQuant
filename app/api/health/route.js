@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import dbConnect from "@/lib/dbConnect";
-import { redis } from "@/lib/redis";
+import { getRedis } from "@/lib/redis";
 import { getPublicRuntimeSummary } from "@/lib/env";
 import { logError } from "@/lib/logger";
 
@@ -32,7 +32,7 @@ export async function GET(req) {
   }
 
   try {
-    const pong = await redis.ping();
+    const pong = await getRedis().ping();
     health.services.redis = {
       status: pong ? "ok" : "degraded",
       response: pong,
