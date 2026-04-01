@@ -166,10 +166,10 @@ export default function CodingList({ questions }) {
         </div>
 
         {/* --- LEADERBOARD QUICK LINK --- */}
-        <Link href="/ranks" className="w-full md:w-auto">
+        <Link href="/leaderboard" className="w-full md:w-auto">
           <button className="w-full flex items-center justify-center gap-3 px-6 py-3.5 bg-amber-500/10 border border-amber-500/20 rounded-2xl text-amber-500 hover:bg-amber-500 hover:text-black transition-all group shadow-[0_0_20px_rgba(245,158,11,0.05)]">
             <Trophy size={16} className="group-hover:rotate-12 transition-transform" />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Global_Rankings</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em]">Global_Leaderboard</span>
           </button>
         </Link>
       </div>

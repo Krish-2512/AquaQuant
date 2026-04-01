@@ -190,7 +190,7 @@ const [isCompanyOpen, setIsCompanyOpen] = useState(false);
         <main className="flex-1 p-8 min-w-0">
           <div className="max-w-4xl mx-auto mb-10">
             
-          <Link href="/ranks" className="block mb-8 group">
+          <Link href="/leaderboard" className="block mb-8 group">
   <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-r from-amber-500/10 via-transparent to-transparent border border-amber-500/20 p-6 transition-all hover:border-amber-500/40">
     <div className="flex items-center justify-between relative z-10">
       <div className="flex items-center gap-5">
@@ -198,14 +198,14 @@ const [isCompanyOpen, setIsCompanyOpen] = useState(false);
           <Trophy size={24} className="text-black" />
         </div>
         <div>
-          <h2 className="text-xl font-black text-white italic uppercase tracking-tighter">Global_Rankings</h2>
-          <p className="text-amber-500/60 font-mono text-[10px] uppercase tracking-widest">Check out Everyone's performance</p>
+          <h2 className="text-xl font-black text-white italic uppercase tracking-tighter">Global_Leaderboard</h2>
+          <p className="text-amber-500/60 font-mono text-[10px] uppercase tracking-widest">Check out real platform-wide performance</p>
         </div>
       </div>
       <div className="flex items-center gap-4">
         <div className="text-right hidden sm:block">
-          <span className="text-[10px] font-bold text-slate-500 uppercase block">Your_Rank</span>
-          <span className="text-white font-black italic">#999+</span>
+          <span className="text-[10px] font-bold text-slate-500 uppercase block">Live_Stats</span>
+          <span className="text-white font-black italic">Attempted + Solved + Accuracy</span>
         </div>
         <ArrowRight size={20} className="text-amber-500 group-hover:translate-x-2 transition-transform" />
       </div>
