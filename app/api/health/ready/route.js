@@ -28,7 +28,7 @@ export async function GET(req) {
       status: "error",
       error: error.message,
     };
-    logError("Health check MongoDB failed", error, { path: req.nextUrl?.pathname });
+    logError("Readiness check MongoDB failed", error, { path: req.nextUrl?.pathname });
   }
 
   try {
@@ -43,10 +43,10 @@ export async function GET(req) {
       status: "error",
       error: error.message,
     };
-    logError("Health check Redis failed", error, { path: req.nextUrl?.pathname });
+    logError("Readiness check Redis failed", error, { path: req.nextUrl?.pathname });
   }
 
-  // Keep the deployment liveness check permissive so the platform can start
-  // the app even if a dependency is briefly unavailable during boot.
-  return NextResponse.json(health, { status: 200 });
+  return NextResponse.json(health, {
+    status: health.status === "ok" ? 200 : 503,
+  });
 }
