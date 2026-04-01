@@ -30,6 +30,9 @@
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0"
   },
+  "optionalDependencies": {
+    "lightningcss-linux-x64-gnu": "1.30.2"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
     "autoprefixer": "^10.4.23",
