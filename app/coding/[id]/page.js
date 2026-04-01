@@ -3,6 +3,8 @@ import CodingQuestion from "@/models/CodingQuestion";
 import CodeEditorClient from "@/components/CodeEditorClient"; // Import the wrapper
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function CodingPage({ params }) {
   // Unwrap params for Next.js 15+
   const { id } = await params; 

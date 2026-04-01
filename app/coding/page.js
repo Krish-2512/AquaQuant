@@ -2,6 +2,8 @@ import dbConnect from "@/lib/dbConnect";
 import CodingQuestion from "@/models/CodingQuestion";
 import CodingList from "@/components/CodingList";
 
+export const dynamic = "force-dynamic";
+
 export default async function CodingListPage() {
   await dbConnect();
   // Fetch all coding questions from MongoDB
