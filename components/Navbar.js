@@ -4,7 +4,7 @@ export default function Navbar() {
   return (
     <nav className="flex justify-between items-center px-12 py-6 border-b border-gray-900">
       <div className="text-xl font-semibold tracking-tight">
-        QuantPrep
+        Q-Lab
       </div>
 
       <div className="flex gap-8 text-gray-300">

@@ -3,7 +3,7 @@ import "./globals.css";
 import Providers from "./provider";
 
 export const metadata = {
-  title: "QuantPrep",
+  title: "Q-Lab",
   description: "LeetCode for Quant Finance",
   icons: {
     icon: "/aqua_logo2.png", // This points to public/aqua_logo2.png

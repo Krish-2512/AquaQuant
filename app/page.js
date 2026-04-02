@@ -52,6 +52,22 @@ const events = [
     type: "Event",
     difficulty: "Specialized",
     color: "from-emerald-500 to-teal-400"
+  },
+  {
+    title: "IMC Prosperity S4",
+    date: "Mar 08, 2026",
+    location: "India / Offline",
+    type: "Competition",
+    difficulty: "Advanced",
+    color: "from-amber-500 to-orange-400"
+  },
+  {
+    title: "World Quant",
+    date: "Mar 22, 2026",
+    location: "India / Offline",
+    type: "Event",
+    difficulty: "Professional",
+    color: "from-rose-500 to-pink-400"
   }
 ];
 
@@ -121,6 +137,39 @@ const whyAqua = [
     align: "left"
   }
 ];
+
+const courses = [
+  {
+    title: "Introduction to Quant Finance and Financial Engineering",
+    desc: "A structured foundation in financial markets, risk, and quantitative thinking.",
+    tag: "FOUNDATION"
+  },
+  {
+    title: "Introduction to Classical Trading",
+    desc: "Practical grounding in technical market analysis and price action behavior.",
+    tag: "EXECUTION"
+  },
+  {
+    title: "Introduction to Algorithmic Trading",
+    desc: "Data-driven trading designing and evaluating systems using statistical principles.",
+    tag: "SYSTEMS"
+  },
+  {
+    title: "Introduction to Corporate Finance",
+    desc: "Learn how firms raise capital, evaluate investments, manage cash flows, and make strategic financing decisions in real business settings.",
+    tag: "FINANCE"
+  }
+];
+
+const chunkItems = (items, size) => {
+  const chunks = [];
+
+  for (let i = 0; i < items.length; i += size) {
+    chunks.push(items.slice(i, i + size));
+  }
+
+  return chunks;
+};
 
 const QuantNexus = () => {
   // return (
@@ -322,6 +371,12 @@ export default function Page() {
   const [hasMounted, setHasMounted] = useState(false);
   const { data: session } = useSession(); // Access user session data
   const [currentIdx, setCurrentIdx] = useState(0);
+  const [currentCourseIdx, setCurrentCourseIdx] = useState(0);
+  const [currentEventIdx, setCurrentEventIdx] = useState(0);
+  const courseSlides = chunkItems(courses, 3);
+  const eventSlides = chunkItems(events, 3);
+  const maxCourseSlideIdx = Math.max(0, courseSlides.length - 1);
+  const maxEventSlideIdx = Math.max(0, eventSlides.length - 1);
   //const [answer, setAnswer] = useState("");
   const [feedback, setFeedback] = useState({ msg: "", color: "" });
 
@@ -499,8 +554,8 @@ export default function Page() {
 
           {/* HERO */}
           <section className="pt-40 pb-20 px-6 max-w-6xl mx-auto text-center">
-              <h1 className="text-6xl md:text-9xl font-black tracking-tighter mb-10 leading-[0.85] uppercase italic">
-                Ace Quant <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-200 to-white">Exams.</span>
+              <h1 className="inline-block text-6xl md:text-9xl font-black tracking-tighter mb-10 leading-[0.9] uppercase italic pr-3 md:pr-5">
+                Ace Quant <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-200 to-white">Exams </span>
               </h1>
               <p className="text-sky-100/60 text-lg mb-12 max-w-2xl mx-auto font-light leading-relaxed italic">
                 The definitive simulation engine for quantitative finance interviews. Solve real problems exactly how top firms test candidates.Created by IIT-IIM Alumni. 
@@ -588,7 +643,7 @@ export default function Page() {
                  </p>
                  <div className="grid grid-cols-2 gap-8 mb-10">
                     <div className="p-6 border border-slate-100 rounded-[30px] bg-slate-50/50">
-                       <h4 className="text-4xl font-black text-sky-950 mb-2">3</h4>
+                       <h4 className="text-4xl font-black text-sky-950 mb-2">4</h4>
                        <p className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest">Mastery_Courses</p>
                     </div>
                     <div className="p-6 border border-slate-100 rounded-[30px] bg-slate-50/50">
@@ -668,29 +723,132 @@ export default function Page() {
                   <span className="text-sky-600 font-mono text-[10px] font-black tracking-[0.5em] uppercase mb-4 block">In-Demand_Syllabus</span>
                   <h2 className="text-6xl font-black uppercase italic tracking-tighter leading-none">Our Courses</h2>
                 </div>
-                <div className="flex gap-2">
+              <div className="flex gap-2">
                    <div className="h-1 w-20 bg-sky-200 rounded-full" />
                    <div className="h-1 w-4 bg-sky-400 rounded-full" />
                 </div>
               </div>
-              <div className="grid lg:grid-cols-3 gap-8">
-                {[
-                  { title: "Introduction to Quant Finance and Financial Engineering", desc: "A structured foundation in financial markets, risk, and quantitative thinking.", tag: "FOUNDATION" },
-                  { title: "Introduction to Classical Trading", desc: "Practical grounding in technical market analysis and price action behavior.", tag: "EXECUTION" },
-                  { title: "Introduction to Algorithmic Trading", desc: "Data-driven trading designing and evaluating systems using statistical principles.", tag: "SYSTEMS" }
-                ].map((course, i) => (
-                  <motion.div key={i} whileHover={{ y: -10 }} className="group bg-white rounded-[50px] p-10 shadow-2xl shadow-sky-900/5 border border-slate-100 flex flex-col text-left relative overflow-hidden h-full">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-sky-50 rounded-bl-[100px] -mr-10 -mt-10 group-hover:bg-sky-400 transition-colors duration-500" />
-                    <div className="relative z-10">
-                       <span className="text-[9px] font-mono font-black text-sky-500 uppercase tracking-widest mb-6 block group-hover:text-white transition-colors">{course.tag}</span>
-                       <h4 className="text-2xl font-black uppercase leading-[1.1] mb-8 group-hover:text-sky-600 transition-colors">{course.title}</h4>
-                       <p className="text-slate-400 text-sm leading-relaxed mb-10 italic">{course.desc}</p>
-                       <button className="flex items-center gap-3 text-sky-950 font-black uppercase text-[10px] tracking-widest border-b-2 border-sky-400 pb-1 group-hover:gap-6 transition-all">
+              <div className="hidden lg:block">
+                <div className="flex items-center justify-between gap-4 mb-8">
+                  <button
+                    onClick={() => setCurrentCourseIdx((prev) => (prev === 0 ? maxCourseSlideIdx : prev - 1))}
+                    className="w-14 h-14 rounded-full border border-slate-200 bg-white flex items-center justify-center text-sky-950 hover:bg-sky-50 transition-colors shadow-lg"
+                    aria-label="Previous course"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <div className="flex gap-3">
+                    {Array.from({ length: maxCourseSlideIdx + 1 }).map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentCourseIdx(idx)}
+                        className={`h-2.5 rounded-full transition-all ${idx === currentCourseIdx ? "w-10 bg-sky-500" : "w-2.5 bg-sky-200"}`}
+                        aria-label={`Go to course slide ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => setCurrentCourseIdx((prev) => (prev === maxCourseSlideIdx ? 0 : prev + 1))}
+                    className="w-14 h-14 rounded-full border border-slate-200 bg-white flex items-center justify-center text-sky-950 hover:bg-sky-50 transition-colors shadow-lg"
+                    aria-label="Next course"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                </div>
+                <div className="overflow-hidden">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentCourseIdx}
+                      initial={{ opacity: 0, x: 40 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -40 }}
+                      transition={{ duration: 0.35, ease: "easeOut" }}
+                      className="grid grid-cols-3 gap-8"
+                    >
+                      {courseSlides[currentCourseIdx].map((course, i) => (
+                        <motion.div
+                          key={`${currentCourseIdx}-${i}-${course.title}`}
+                          whileHover={{ y: -10 }}
+                          className="group bg-white rounded-[50px] p-10 shadow-2xl shadow-sky-900/5 border border-slate-100 flex flex-col text-left relative overflow-hidden min-h-[360px]"
+                        >
+                          <div className="absolute top-0 right-0 w-32 h-32 bg-sky-50 rounded-bl-[100px] -mr-10 -mt-10 group-hover:bg-sky-400 transition-colors duration-500" />
+                          <div className="relative z-10 flex flex-col h-full">
+                            <span className="text-[9px] font-mono font-black text-sky-500 uppercase tracking-widest mb-6 block group-hover:text-white transition-colors">
+                              {course.tag}
+                            </span>
+                            <h4 className="text-2xl font-black uppercase leading-[1.1] mb-8 group-hover:text-sky-600 transition-colors">
+                              {course.title}
+                            </h4>
+                            <p className="text-slate-400 text-sm leading-relaxed mb-10 italic">
+                              {course.desc}
+                            </p>
+                            <button className="mt-auto flex items-center gap-3 text-sky-950 font-black uppercase text-[10px] tracking-widest border-b-2 border-sky-400 pb-1 group-hover:gap-6 transition-all w-fit">
+                              Course Details <ArrowRight size={14}/>
+                            </button>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              <div className="lg:hidden max-w-3xl mx-auto">
+                <div className="flex items-center justify-between gap-4 mb-8">
+                  <button
+                    onClick={() => setCurrentCourseIdx((prev) => (prev - 1 + courses.length) % courses.length)}
+                    className="w-14 h-14 rounded-full border border-slate-200 bg-white flex items-center justify-center text-sky-950 hover:bg-sky-50 transition-colors shadow-lg"
+                    aria-label="Previous course"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <div className="flex gap-3">
+                    {courses.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentCourseIdx(idx)}
+                        className={`h-2.5 rounded-full transition-all ${idx === currentCourseIdx ? "w-10 bg-sky-500" : "w-2.5 bg-sky-200"}`}
+                        aria-label={`Go to course ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => setCurrentCourseIdx((prev) => (prev + 1) % courses.length)}
+                    className="w-14 h-14 rounded-full border border-slate-200 bg-white flex items-center justify-center text-sky-950 hover:bg-sky-50 transition-colors shadow-lg"
+                    aria-label="Next course"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                </div>
+                <div className="relative min-h-[360px]">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentCourseIdx}
+                      initial={{ opacity: 0, x: 40 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -40 }}
+                      transition={{ duration: 0.35, ease: "easeOut" }}
+                      whileHover={{ y: -10 }}
+                      className="group w-full bg-white rounded-[50px] p-10 md:p-12 shadow-2xl shadow-sky-900/5 border border-slate-100 flex flex-col text-left relative overflow-hidden"
+                    >
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-sky-50 rounded-bl-[100px] -mr-10 -mt-10 group-hover:bg-sky-400 transition-colors duration-500" />
+                      <div className="relative z-10 flex flex-col h-full">
+                        <span className="text-[9px] font-mono font-black text-sky-500 uppercase tracking-widest mb-6 block group-hover:text-white transition-colors">
+                          {courses[currentCourseIdx].tag}
+                        </span>
+                        <h4 className="text-2xl md:text-3xl font-black uppercase leading-[1.1] mb-8 group-hover:text-sky-600 transition-colors">
+                          {courses[currentCourseIdx].title}
+                        </h4>
+                        <p className="text-slate-400 text-sm md:text-base leading-relaxed mb-10 italic max-w-2xl">
+                          {courses[currentCourseIdx].desc}
+                        </p>
+                        <button className="mt-auto flex items-center gap-3 text-sky-950 font-black uppercase text-[10px] tracking-widest border-b-2 border-sky-400 pb-1 group-hover:gap-6 transition-all w-fit">
                           Course Details <ArrowRight size={14}/>
-                       </button>
-                    </div>
-                  </motion.div>
-                ))}
+                        </button>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
               </div>
             </div>
           </section>
@@ -715,7 +873,7 @@ export default function Page() {
 <section className="py-40 px-6 max-w-7xl mx-auto">
   <div className="grid lg:grid-cols-3 gap-12 text-white">
     <div className="lg:col-span-2 text-left">
-      <h2 className="text-6xl font-black uppercase italic mb-8 tracking-tighter leading-[0.9]">Universal <br/> Standards</h2>
+      <h2 className="text-6xl font-black uppercase italic mb-8 tracking-tighter leading-[0.9]">Choose A <br/> Topic</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {["Probability", "Statistics", "Puzzles", "Quant Coding", "Linear Algebra", "Stochastic Processes","Mental Maths"].map(topic => (
           /* Wrapped the topic in your requested Link format */
@@ -769,17 +927,109 @@ export default function Page() {
               <span className="text-sky-400 font-mono text-[10px] font-black tracking-[0.5em] uppercase mb-4 block">Global_Network</span>
               <h2 className="text-5xl font-black uppercase italic tracking-tighter text-white">Upcoming Events</h2>
             </div>
-            <div className="grid md:grid-cols-3 gap-6">
-              {events.map((event, idx) => (
-                <div key={idx} className="bg-white text-sky-950 p-8 rounded-[40px] text-left hover:scale-105 transition-all shadow-xl">
-                  <span className="text-[10px] font-mono text-sky-600 uppercase tracking-widest font-black mb-6 block">{event.type}</span>
-                  <h4 className="text-2xl font-black uppercase italic mb-8 leading-tight">{event.title}</h4>
-                  <div className="space-y-3 font-mono text-[11px] text-slate-400 uppercase font-bold tracking-widest">
-                     <div className="flex items-center gap-3"><Calendar size={14} /> {event.date}</div>
-                     <div className="flex items-center gap-3"><MapPin size={14} /> {event.location}</div>
-                  </div>
+            <div className="hidden md:block">
+              <div className="flex items-center justify-between gap-4 mb-8">
+                <button
+                  onClick={() => setCurrentEventIdx((prev) => (prev === 0 ? maxEventSlideIdx : prev - 1))}
+                  className="w-14 h-14 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors shadow-lg"
+                  aria-label="Previous event"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <div className="flex gap-3">
+                  {Array.from({ length: maxEventSlideIdx + 1 }).map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentEventIdx(idx)}
+                      className={`h-2.5 rounded-full transition-all ${idx === currentEventIdx ? "w-10 bg-sky-400" : "w-2.5 bg-white/20"}`}
+                      aria-label={`Go to event slide ${idx + 1}`}
+                    />
+                  ))}
                 </div>
-              ))}
+                <button
+                  onClick={() => setCurrentEventIdx((prev) => (prev === maxEventSlideIdx ? 0 : prev + 1))}
+                  className="w-14 h-14 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors shadow-lg"
+                  aria-label="Next event"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </div>
+              <div className="overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentEventIdx}
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -40 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="grid grid-cols-3 gap-6"
+                  >
+                    {eventSlides[currentEventIdx].map((event, idx) => (
+                      <motion.div
+                        key={`${currentEventIdx}-${idx}-${event.title}`}
+                        whileHover={{ y: -8, scale: 1.01 }}
+                        className="bg-white text-sky-950 p-8 rounded-[40px] text-left shadow-xl min-h-[280px] flex flex-col"
+                      >
+                        <span className="text-[10px] font-mono text-sky-600 uppercase tracking-widest font-black mb-6 block">{event.type}</span>
+                        <h4 className="text-2xl font-black uppercase italic mb-8 leading-tight">{event.title}</h4>
+                        <div className="space-y-3 font-mono text-[11px] text-slate-400 uppercase font-bold tracking-widest mt-auto">
+                          <div className="flex items-center gap-3"><Calendar size={14} /> {event.date}</div>
+                          <div className="flex items-center gap-3"><MapPin size={14} /> {event.location}</div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+
+            <div className="md:hidden max-w-xl mx-auto">
+              <div className="flex items-center justify-between gap-4 mb-8">
+                <button
+                  onClick={() => setCurrentEventIdx((prev) => (prev - 1 + events.length) % events.length)}
+                  className="w-14 h-14 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors shadow-lg"
+                  aria-label="Previous event"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <div className="flex gap-3">
+                  {events.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentEventIdx(idx)}
+                      className={`h-2.5 rounded-full transition-all ${idx === currentEventIdx ? "w-10 bg-sky-400" : "w-2.5 bg-white/20"}`}
+                      aria-label={`Go to event ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+                <button
+                  onClick={() => setCurrentEventIdx((prev) => (prev + 1) % events.length)}
+                  className="w-14 h-14 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white hover:bg-white/10 transition-colors shadow-lg"
+                  aria-label="Next event"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </div>
+              <div className="relative min-h-[280px]">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentEventIdx}
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -40 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    whileHover={{ y: -8 }}
+                    className="bg-white text-sky-950 p-8 rounded-[40px] text-left shadow-xl min-h-[280px] flex flex-col"
+                  >
+                    <span className="text-[10px] font-mono text-sky-600 uppercase tracking-widest font-black mb-6 block">{events[currentEventIdx].type}</span>
+                    <h4 className="text-2xl font-black uppercase italic mb-8 leading-tight">{events[currentEventIdx].title}</h4>
+                    <div className="space-y-3 font-mono text-[11px] text-slate-400 uppercase font-bold tracking-widest mt-auto">
+                      <div className="flex items-center gap-3"><Calendar size={14} /> {events[currentEventIdx].date}</div>
+                      <div className="flex items-center gap-3"><MapPin size={14} /> {events[currentEventIdx].location}</div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
           </section>
 
@@ -904,7 +1154,7 @@ export default function Page() {
       </div>
     </div>
 
-    <div>
+    <div className="lg:ml-15">
   <h4 className="text-sky-400 font-mono text-[10px] uppercase mb-8 font-black tracking-[0.4em]">Resource</h4>
   <ul className="text-slate-500 text-sm space-y-4 font-bold uppercase italic tracking-widest">
     {/* THEORY -> # */}
@@ -920,7 +1170,7 @@ export default function Page() {
         href={session ? "/notebooks" : "/auth/signin"} 
         className="hover:text-white cursor-pointer transition-colors block"
       >
-        Vault
+        Research Notebooks
       </Link>
     </li>
 
@@ -930,27 +1180,27 @@ export default function Page() {
         href={session ? "/dashboard" : "/auth/signin"} 
         className="hover:text-white cursor-pointer transition-colors block"
       >
-        Solver
+        Problems
       </Link>
     </li>
   </ul>
 </div>
     
-    <div>
+    {/* <div>
       <h4 className="text-sky-400 font-mono text-[10px] uppercase mb-8 font-black tracking-[0.4em]">Enterprise</h4>
       <ul className="text-slate-500 text-sm space-y-4 font-bold uppercase italic tracking-widest">
         <li className="hover:text-white cursor-pointer transition-colors">Talent Pipeline</li>
         <li className="hover:text-white cursor-pointer transition-colors">Sponsorship</li>
         <li className="hover:text-white cursor-pointer transition-colors">Terminal Access</li>
       </ul>
-    </div>
+    </div> */}
   </div>
 
   <div className="max-w-7xl mx-auto px-6 pb-10">
-    <div className="flex justify-between items-center text-[9px] font-mono text-slate-700 tracking-[0.3em] uppercase border-t border-white/5 pt-10">
+    {/* <div className="flex justify-between items-center text-[9px] font-mono text-slate-700 tracking-[0.3em] uppercase border-t border-white/5 pt-10">
       <span>© 2026 QUANT_PRISM_OS</span>
       <span>SYSTEM_ID: QP-CELESTIAL-5545</span>
-    </div>
+    </div> */}
   </div>
 </footer>
         </div>

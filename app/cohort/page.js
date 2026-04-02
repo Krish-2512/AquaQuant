@@ -98,8 +98,8 @@ const processSteps = [
 ];
 
 const audience = [
-  "Quantitative finance",
-  "Trading and financial research",
+  "Quantitative Finance Enthusiasts",
+  "Trading and Financial Research Enthusiasts",
   "Breaking into top finance and quant firms",
 ];
 
@@ -550,7 +550,7 @@ export default function SubscriptionPage() {
 
                 <div className="mt-8 flex flex-col items-center rounded-[30px] border border-white/15 bg-white p-5">
                   <NextImage
-                    src="/qr.jpeg"
+                    src="/Form_qr.jpeg"
                     alt="Cohort QR Code"
                     width={220}
                     height={220}
