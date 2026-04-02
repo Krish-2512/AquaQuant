@@ -176,10 +176,12 @@ export default function SubscriptionPage() {
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.3)] transition-transform hover:scale-110"
                 >
-                  <img
-                    src={session.user?.image || "https://ui-avatars.com/api/?name=" + session.user?.name}
+                  <NextImage
+                    src={session.user?.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(session.user?.name || "AQUA")}`}
                     alt="profile"
-                    className="h-full w-full object-cover"
+                    fill
+                    sizes="40px"
+                    className="object-cover"
                   />
                 </button>
 

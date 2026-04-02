@@ -368,7 +368,6 @@ export default function Page() {
   const [tickerIndex, setTickerIndex] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [answer, setAnswer] = useState("");
-  const [hasMounted, setHasMounted] = useState(false);
   const { data: session } = useSession(); // Access user session data
   const [currentIdx, setCurrentIdx] = useState(0);
   const [currentCourseIdx, setCurrentCourseIdx] = useState(0);
@@ -397,18 +396,14 @@ export default function Page() {
   };
 
   useEffect(() => {
-    setHasMounted(true);
     const interval = setInterval(() => 
       setTickerIndex(prev => (prev + 1) % tickerMessages.length), 3000
     );
     return () => clearInterval(interval);
   }, []);
 
-  if (!hasMounted) return <div className="min-h-screen bg-[#020617]" />;
-
   return (
     <>
-      <script src="https://cdn.tailwindcss.com"></script>
       <div className="min-h-screen text-white selection:bg-sky-400/30 font-sans overflow-x-hidden relative">
         
         {/* SURGICAL SHADING & 60/40 GRADIENT */}
@@ -505,7 +500,13 @@ export default function Page() {
           onClick={() => setDropdownOpen(!dropdownOpen)}
           className="w-10 h-10 rounded-full border-2 border-sky-400 overflow-hidden shadow-[0_0_15px_rgba(56,189,248,0.3)] hover:scale-110 transition-transform relative"
         >
-          <img src={session.user?.image} alt="profile" className="w-full h-full object-cover" />
+          <NextImage
+            src={session.user?.image || "https://ui-avatars.com/api/?name=AQUA"}
+            alt="profile"
+            fill
+            sizes="40px"
+            className="object-cover"
+          />
         </button>
 
         <AnimatePresence>
@@ -886,7 +887,7 @@ export default function Page() {
       </div>
     </div>
     <div className="bg-gradient-to-br from-sky-500 to-blue-700 p-10 rounded-[40px] shadow-2xl text-left flex flex-col justify-center border border-white/20">
-      <p className="text-2xl font-black leading-tight italic text-white">"We don't train traders. We train quant thinkers."</p>
+      <p className="text-2xl font-black leading-tight italic text-white">&ldquo;We don&apos;t train traders. We train quant thinkers.&rdquo;</p>
     </div>
   </div>
 </section>

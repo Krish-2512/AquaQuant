@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { unstable_cache } from "next/cache";
 import { getServerSession } from "next-auth/next";
 
 import dbConnect from "@/lib/dbConnect";
@@ -11,16 +12,14 @@ function getTier(score) {
   return "Junior";
 }
 
-export async function GET() {
-  try {
+const getCachedLeaderboard = unstable_cache(
+  async () => {
     await dbConnect();
-
-    const session = await getServerSession();
     const users = await User.find({})
       .select("name email image university totalAttempted totalCorrect questionProgress codingProgress")
       .lean();
 
-    const leaderboard = users
+    return users
       .map((user) => {
         const theoryAttemptedEntries =
           user.questionProgress?.filter((entry) => (entry.attemptsCount || 0) > 0) || [];
@@ -80,6 +79,15 @@ export async function GET() {
         ...entry,
         rank: index + 1,
       }));
+  },
+  ["leaderboard-v1"],
+  { revalidate: 60, tags: ["leaderboard"] }
+);
+
+export async function GET() {
+  try {
+    const session = await getServerSession();
+    const leaderboard = await getCachedLeaderboard();
 
     const currentUser =
       session?.user?.email

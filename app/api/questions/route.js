@@ -92,19 +92,41 @@
 
 
 import { NextResponse } from 'next/server';
+import { unstable_cache } from "next/cache";
 import dbConnect from "@/lib/dbConnect";
 import Question from "@/models/Question";
 import { buildQuestionFilters, normalizeQuestionDoc } from "@/lib/questions";
 
+const getCachedQuestionPage = unstable_cache(
+  async (query, page, limit) => {
+    await dbConnect();
+    const skip = (page - 1) * limit;
+
+    const total = await Question.collection.countDocuments(query);
+
+    const questions = await Question.collection
+      .find(query)
+      .sort({ createdAt: -1, CreatedAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+
+    return {
+      total,
+      questions: questions.map((question) => normalizeQuestionDoc(question)),
+    };
+  },
+  ["questions-list-v1"],
+  { revalidate: 120, tags: ["questions"] }
+);
+
 export async function GET(request) {
   try {
-    await dbConnect();
     const { searchParams } = new URL(request.url);
 
     // 1. DEFINE PAGINATION VARIABLES
     const page = parseInt(searchParams.get('page')) || 1;
     const limit = 10;
-    const skip = (page - 1) * limit;
 
     const cat = searchParams.get('category');
     const diff = searchParams.get('difficulty');
@@ -117,21 +139,11 @@ export async function GET(request) {
       search,
     });
 
-    // 2. FETCH TOTAL COUNT & PAGINATED DATA
-    const total = await Question.collection.countDocuments(query);
-    
-    const questions = await Question.collection
-      .find(query)
-      .sort({ createdAt: -1, CreatedAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .toArray();
-
-    const normalizedQuestions = questions.map((question) => normalizeQuestionDoc(question));
+    const { total, questions } = await getCachedQuestionPage(query, page, limit);
 
     return NextResponse.json({ 
       success: true, 
-      data: normalizedQuestions,
+      data: questions,
       pagination: {
         total,
         page,
