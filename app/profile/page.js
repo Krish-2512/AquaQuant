@@ -38,7 +38,13 @@ export default function ProfilePage() {
     }
   };
 
-  useEffect(() => { fetchStats(); }, []);
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      void fetchStats();
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   const codingPerc = Math.round((stats.codingSolved / (stats.codingTotal || 1)) * 100);
   const solvedPercentage = parseFloat(((stats.solved / (stats.totalQuestions || 1)) * 100).toFixed(1));

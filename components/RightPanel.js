@@ -155,9 +155,17 @@ export default function RightPanel() {
   const attemptedPercentage = Math.max(0, ((stats.attempted - stats.solved) / stats.totalQuestions) * 100);
 
   useEffect(() => {
-    fetchStats();
-    window.addEventListener('statsUpdated', fetchStats);
-    return () => window.removeEventListener('statsUpdated', fetchStats);
+    const handleStatsUpdate = () => {
+      void fetchStats();
+    };
+
+    const timeoutId = setTimeout(handleStatsUpdate, 0);
+    window.addEventListener('statsUpdated', handleStatsUpdate);
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('statsUpdated', handleStatsUpdate);
+    };
   }, []);
 
   // Filter companies based on tagSearch input

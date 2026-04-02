@@ -138,7 +138,9 @@ export default function CodeWorkspace({ question }) {
                   }`}>
                     {question.difficulty.toUpperCase()}
                   </span>
-                  <span className="text-slate-700 text-[10px]">// LEVEL_{question.difficulty === 'Hard' ? '03' : '01'}</span>
+                  <span className="text-slate-700 text-[10px]">
+                    {"//"} LEVEL_{question.difficulty === 'Hard' ? '03' : '01'}
+                  </span>
                 </div>
                 <h1 className="text-3xl font-black text-white tracking-tighter mb-6">{question.title}</h1>
                 <div className="prose prose-invert prose-sm max-w-none text-slate-400 leading-relaxed" 

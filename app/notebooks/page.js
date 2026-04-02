@@ -92,7 +92,9 @@ export default function NotebookArchive() {
                 </div>
 
                 <h3 className="text-2xl font-black text-white italic mb-1">{item.month}</h3>
-                <p className="text-slate-500 font-mono text-[10px] mb-6 uppercase tracking-widest">{item.year} // DATA_NODE_{item.id.toUpperCase()}</p>
+                <p className="text-slate-500 font-mono text-[10px] mb-6 uppercase tracking-widest">
+                  {item.year} {"//"} DATA_NODE_{item.id.toUpperCase()}
+                </p>
 
                 <div className="flex items-center justify-between mt-auto">
                   <span className="text-xs font-bold text-slate-400">{item.count} Problems</span>
