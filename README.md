@@ -1,3 +1,20 @@
+# AQUA
+
+![CI](https://github.com/<your-github-username>/<your-repo-name>/actions/workflows/ci.yml/badge.svg)
+
+Production-focused quant preparation platform built with Next.js, MongoDB, NextAuth, Upstash Redis, Railway, and Sentry.
+
+Replace the badge URL above with your actual GitHub username and repository name after pushing.
+
+## Branch Protection Suggestion
+
+For the `master` branch, enable these GitHub branch protection rules:
+
+- Require a pull request before merging
+- Require status checks to pass before merging
+- Select the `CI` workflow as the required status check
+- Restrict direct pushes to `master` if you want stricter protection
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
