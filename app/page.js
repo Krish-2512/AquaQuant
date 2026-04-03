@@ -1137,7 +1137,7 @@ export default function Page() {
 
         <div className="flex items-start gap-3 text-slate-400 mb-4 group">
           <Mail size={16} className="mt-0.5 group-hover:text-sky-400 transition-colors" />
-          <span className="font-mono text-sm break-all">mailto:learn.finance@aqua.org.in</span>
+          <span className="font-mono text-sm break-all">learn.finance@aqua.org.in</span>
         </div>
 
         <div className="flex items-start gap-3 text-slate-400 mb-6 group">
@@ -1152,7 +1152,7 @@ export default function Page() {
   {[
     { Icon: Linkedin, href: "https://www.linkedin.com/company/aqua-advanced-quantitative-analytics-private-limited/" },
     { Icon: Instagram, href: "https://www.instagram.com/theaquaedge" },
-    { Icon: Mail, href: "mailto:learn.finance@aqua.org.in" },
+    { Icon: Mail, href: "learn.finance@aqua.org.in" },
     { Icon: Github, href: "https://github.com/ARFinsecProprietary/NIFTY-BANKNIFTY-FUTURES-Dashboard" },
     { 
       Icon: MessageCircle, 
