@@ -5,6 +5,9 @@ import CodingQuestion from "@/models/CodingQuestion";
 import User from "@/models/User";
 import { requireAdminPage } from "@/lib/admin";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export default async function AdminOverviewPage() {
   await requireAdminPage();
   await dbConnect();

@@ -3,6 +3,9 @@ import User from "@/models/User";
 import { requireAdminPage } from "@/lib/admin";
 import AdminUsersClient from "@/components/admin/AdminUsersClient";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export default async function AdminUsersPage() {
   await requireAdminPage();
   await dbConnect();

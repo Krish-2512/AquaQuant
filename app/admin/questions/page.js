@@ -3,6 +3,9 @@ import Question from "@/models/Question";
 import { requireAdminPage } from "@/lib/admin";
 import AdminQuestionsClient from "@/components/admin/AdminQuestionsClient";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export default async function AdminQuestionsPage() {
   await requireAdminPage();
   await dbConnect();

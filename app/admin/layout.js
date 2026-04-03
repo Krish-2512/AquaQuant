@@ -2,6 +2,9 @@ import Link from "next/link";
 import { BarChart3, BookPlus, ShieldCheck, Users } from "lucide-react";
 import { requireAdminPage } from "@/lib/admin";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 const navItems = [
   { href: "/admin", label: "Overview", icon: BarChart3 },
   { href: "/admin/questions", label: "Questions", icon: BookPlus },
