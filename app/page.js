@@ -1135,6 +1135,18 @@ export default function Page() {
           <span className="font-mono text-sm tracking-widest">+91 9330722688</span>
         </div>
 
+        <div className="flex items-start gap-3 text-slate-400 mb-4 group">
+          <Mail size={16} className="mt-0.5 group-hover:text-sky-400 transition-colors" />
+          <span className="font-mono text-sm break-all">mailto:learn.finance@aqua.org.in</span>
+        </div>
+
+        <div className="flex items-start gap-3 text-slate-400 mb-6 group">
+          <MapPin size={16} className="mt-0.5 group-hover:text-sky-400 transition-colors" />
+          <span className="max-w-md text-sm leading-relaxed">
+            6WS3B, West Tower, Mani Casadona Business Centre, International Financial Hub, Kolkata 700160
+          </span>
+        </div>
+
        
         <div className="flex flex-wrap gap-4">
   {[
