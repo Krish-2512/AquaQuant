@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
   university: { type: String, default: 'Not Specified' },
   image: { type: String }, // For Google profile pics
   
@@ -57,5 +58,6 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.index({ "questionProgress.questionId": 1 });
 UserSchema.index({ "codingProgress.codingQuestionId": 1 });
+UserSchema.index({ role: 1 });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);

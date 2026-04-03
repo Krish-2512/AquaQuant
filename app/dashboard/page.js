@@ -128,7 +128,10 @@ const [isCompanyOpen, setIsCompanyOpen] = useState(false);
     { name: 'Theory', icon: <BookOpen size={14}/>, href: '/theory' }, 
     { name: 'Discussion', icon: <MessageSquare size={14}/>, href: '#' }, 
     { name: 'Mental Maths', icon: <Brain size={14}/>, href: '#' }, 
-    { name: 'Notebooks', icon: <Notebook size={14}/>, href: '/notebooks' } // Link added here
+    { name: 'Notebooks', icon: <Notebook size={14}/>, href: '/notebooks' },
+    ...(session?.user?.role === 'admin'
+      ? [{ name: 'Admin', icon: <Building2 size={14}/>, href: '/admin' }]
+      : [])
   ].map((item) => (
     <Link 
       key={item.name} 
