@@ -94,7 +94,7 @@ const fees = [
 const processSteps = [
   "Fill the pre-registration form.",
   "Applications are reviewed to keep the cohort limited and personalized.",
-  "Selected students receive the final enrollment link on 2 April.",
+  "Selected students receive the final enrollment link on 7 April.",
 ];
 
 const audience = [
