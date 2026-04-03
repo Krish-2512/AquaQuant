@@ -1152,7 +1152,7 @@ export default function Page() {
   {[
     { Icon: Linkedin, href: "https://www.linkedin.com/company/aqua-advanced-quantitative-analytics-private-limited/" },
     { Icon: Instagram, href: "https://www.instagram.com/theaquaedge" },
-    { Icon: Mail, href: "learn.finance@aqua.org.in" },
+    { Icon: Mail, href: "mailto:learn.finance@aqua.org.in" },
     { Icon: Github, href: "https://github.com/ARFinsecProprietary/NIFTY-BANKNIFTY-FUTURES-Dashboard" },
     { 
       Icon: MessageCircle, 
