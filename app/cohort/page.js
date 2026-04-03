@@ -628,7 +628,7 @@ export default function SubscriptionPage() {
                     Certification
                   </p>
                   <p className="mt-3 text-sm leading-relaxed text-slate-300">
-                    Internship certificate from AQUA with co-certification support.
+                    Internship certificate from AQUA With co-certification from top IIT Finance Cells.
                   </p>
                 </div>
               </div>
