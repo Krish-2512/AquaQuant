@@ -208,7 +208,7 @@ export default function SubscriptionPage() {
                           className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-[11px] font-black uppercase tracking-widest text-red-400 transition-colors hover:bg-red-400/10"
                         >
                           <Terminal size={14} />
-                          SignOut
+                          Sign Out
                         </button>
                       </motion.div>
                     </>
@@ -218,7 +218,7 @@ export default function SubscriptionPage() {
             ) : (
               <Link href="/auth/signin">
                 <button className="rounded-full bg-sky-400 px-8 py-2.5 text-[13px] font-black text-sky-950 shadow-[0_0_20px_rgba(56,189,248,0.3)] transition-all hover:scale-105 hover:bg-white">
-                  SignIn
+                  Sign In
                 </button>
               </Link>
             )}
