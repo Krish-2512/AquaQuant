@@ -464,7 +464,7 @@ export default function Page() {
 </div>
           
    <div className="hidden lg:flex gap-10 text-[14px] font-mono uppercase tracking-[0.3em] text-sky-100 font-bold">
-  {['Notebooks', 'Questions', 'Cohort'].map((item) => {
+  {['Notebooks', 'Questions', 'Cohort', 'Subscription'].map((item) => {
     let href = "#";
     
    
@@ -474,6 +474,8 @@ export default function Page() {
       href = session ? "/notebooks" : "/auth/signin";
     } else if (item === 'Cohort') {
       href = "/cohort";
+    } else if (item === 'Subscription') {
+      href = "/subscription";
     }
 
     return (
@@ -856,6 +858,65 @@ export default function Page() {
                       </div>
                     </motion.div>
                   </AnimatePresence>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="py-32 px-6 bg-[#06101d]/90 border-y border-white/5">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] items-stretch">
+                <div className="rounded-[40px] border border-white/10 bg-white/[0.04] p-8 md:p-10 text-left">
+                  <span className="text-sky-400 font-mono text-[10px] font-black tracking-[0.5em] uppercase mb-4 block">
+                    Subscriber_Access
+                  </span>
+                  <h2 className="text-5xl md:text-6xl font-black uppercase italic tracking-tighter text-white leading-none">
+                    Annual Subscription
+                  </h2>
+                  <p className="mt-6 max-w-2xl text-slate-300 text-lg leading-relaxed">
+                    Unlock all coding notebooks plus medium and hard questions through a simple annual pass.
+                    The subscriber layer keeps growing with continuously updated notebooks, questions, and
+                    the latest research updates.
+                  </p>
+
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    <Link
+                      href="/subscription"
+                      className="inline-flex items-center gap-3 rounded-full bg-white px-7 py-4 text-[11px] font-black uppercase tracking-[0.28em] text-slate-950 transition-all hover:scale-[1.02] hover:bg-sky-300"
+                    >
+                      View Subscription
+                      <ArrowRight size={16} />
+                    </Link>
+                    <a
+                      href="mailto:learn.finance@aqua.org.in?subject=AQUA%20Subscription%20Access"
+                      className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/5 px-7 py-4 text-[11px] font-black uppercase tracking-[0.28em] text-white transition-all hover:border-sky-400/40 hover:bg-sky-500/10"
+                    >
+                      Request Access
+                      <ChevronRight size={16} />
+                    </a>
+                  </div>
+                </div>
+
+                <div className="rounded-[40px] border border-sky-400/20 bg-[linear-gradient(180deg,rgba(14,165,233,0.18),rgba(255,255,255,0.04))] p-8 md:p-10 text-left text-white">
+                  <span className="text-[10px] font-mono font-black uppercase tracking-[0.35em] text-sky-300">
+                    Rs. 500 / Annual
+                  </span>
+                  <div className="mt-8 space-y-4">
+                    {[
+                      "All coding notebooks",
+                      "Medium and hard questions",
+                      "Continuously updating notebooks",
+                      "Latest research updates",
+                    ].map((item) => (
+                      <div
+                        key={item}
+                        className="flex items-center gap-3 rounded-[20px] border border-white/10 bg-black/20 px-4 py-4"
+                      >
+                        <CheckCircle2 size={18} className="text-sky-300" />
+                        <span className="text-sm leading-relaxed text-slate-100">{item}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
