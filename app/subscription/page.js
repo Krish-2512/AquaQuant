@@ -116,10 +116,10 @@ export default function SubscriptionPage() {
           <div className="hidden gap-10 text-[13px] font-bold uppercase tracking-[0.25em] text-sky-100 lg:flex">
             {["Notebooks", "Questions", "Cohort", "Subscription"].map((item) => {
               let href = "/";
-              if (item === "Cohort") href = "/cohort";
+              if (item === "Cohort") href = session ? "/cohort" : "/auth/signin";
               else if (item === "Subscription") href = "/subscription";
-              else if (item === "Notebooks") href = session ? "/notebooks" : "/#notebooks";
-              else if (item === "Questions") href = session ? "/dashboard" : "/#questions";
+              else if (item === "Notebooks") href = session ? "/notebooks" : "/auth/signin";
+              else if (item === "Questions") href = session ? "/dashboard" : "/auth/signin";
 
               return (
                 <Link
@@ -233,7 +233,7 @@ export default function SubscriptionPage() {
                     <ArrowRight size={16} />
                   </a>
                   <Link
-                    href="/dashboard"
+                    href={session ? "/dashboard" : "/auth/signin"}
                     className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/5 px-7 py-4 text-[11px] font-black uppercase tracking-[0.28em] text-white transition-all hover:border-sky-400/40 hover:bg-sky-500/10"
                   >
                     Explore Questions
