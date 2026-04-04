@@ -6,6 +6,8 @@ const PUBLIC_PATHS = new Set([
   "/cohort",
   "/subscription",
   "/auth/signin",
+  "/api/health",
+  "/api/health/ready",
 ]);
 
 function isPublicPath(pathname) {
@@ -36,6 +38,16 @@ export async function middleware(req) {
     return NextResponse.next();
   }
 
+  if (pathname.startsWith("/api/")) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Unauthorized",
+      },
+      { status: 401 }
+    );
+  }
+
   const signInUrl = new URL("/auth/signin", req.url);
   const callbackPath = `${pathname}${search || ""}`;
   signInUrl.searchParams.set("callbackUrl", callbackPath);
@@ -45,6 +57,6 @@ export async function middleware(req) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)",
   ],
 };
