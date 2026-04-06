@@ -84,18 +84,35 @@ const drillQuestions = [
 
 const testimonials = [
   {
-    quote: "I didn't come from a finance background, but AQUA's beta course broke things down in a way that made sense.I went from knowing nothing about markets to writing Python scrips that actually tracked and tested trading ideas.",
-    author: "Sudhanshu Kumar",
-    role: "IIT DELHI",
-    //metric: "Cleared Level 5 Vault"
+    quote: "AQUA strikes a rare balance between technical depth and clarity. Their curriculum doesn’t just teach trading, it builds a quant mindset from the ground up.",
+    author: "Satyavruth Garg",
+    role: "Senior ASIC Architect - NVIDIA"
   },
   {
-    quote: "Testing AQUA's course gave me my first real taste of quant finance. It pushed me out of the textbook mindset-I was actually building strategies, not just reading about them. Even in beta, it felt practical and relevant.",
+    quote: "What impressed me most about AQUA is their ability to simplify complex financial concepts without dumbing them down. For anyone looking to break into institutional trading, this is the gold standard entry.",
+    author: "Zaid Hossain",
+    role: "Senior Associate - JP Morgan Chase"
+  },
+  {
+    quote: "AQUA brings the practicality of a trading floor into the classroom. This is the kind of platform I wish existed when I was starting out.",
+    author: "Abhirup Banerjee",
+    role: "Wealth Manager - Motilal Oswal Financial Services"
+  },
+  {
+    quote: "Testing AQUA’s course gave me my first real taste of quant finance. It pushed me out of the textbook mindset—I was actually building strategies, not just reading about them. Even in beta, it felt practical and relevant.",
     author: "Rajneesh Babu",
-    role: "IISC Bangalore",
-    //metric: "Top 2% Global Rank"
+    role: "M.Tech Student - IISc Bangalore"
+  },
+  {
+    quote: "What stood out during testing was how accessible it made complex ideas. I started off unsure, but by the end, I could backtest strategies and interpret results, and even spot flaws in market logic. That felt empowering.",
+    author: "Kislay Aditya",
+    role: "MS Student - IIT Bombay"
+  },
+  {
+    quote: "I didn’t come from a finance background, but AQUA’s beta course broke things down in a way that made sense. I went from knowing nothing about markets to writing Python scripts that actually tracked and tested trading ideas.",
+    author: "Sudhanshu Kumar",
+    role: "M.Tech Student - IIT Delhi"
   }
-  
 ];
 
 const whyAqua = [
