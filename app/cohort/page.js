@@ -497,9 +497,13 @@ export default function SubscriptionPage() {
                   </div>
                   <p className="text-sm leading-relaxed text-slate-300">
                     Please locate your institute in the attached file titled{" "}
-                    <span className="font-black text-white">
-                      Partner Institutes.pdf
-                    </span>{" "}
+                    <a
+                      href="/Partner_Institutions.pdf"
+                      download
+                      className="font-black text-white underline decoration-sky-400/40 underline-offset-4 hover:text-sky-200"
+                    >
+                      Partner Institutions.pdf
+                    </a>{" "}
                     to verify partner eligibility. The discount is not
                     applicable to alumni of partner institutes.
                   </p>
