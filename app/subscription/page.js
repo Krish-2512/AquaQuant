@@ -245,7 +245,7 @@ export default function SubscriptionPage() {
                   <div className="rounded-[28px] border border-white/10 bg-white/5 p-5">
                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Plan</p>
                     <p className="mt-3 text-3xl font-black italic tracking-tighter text-white">Rs. 500</p>
-                    <p className="mt-1 text-sm text-slate-400">Annual</p>
+                    <p className="mt-1 text-sm text-slate-400">Annual · Coming Soon</p>
                   </div>
                   <div className="rounded-[28px] border border-white/10 bg-white/5 p-5">
                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Access</p>
@@ -425,7 +425,7 @@ export default function SubscriptionPage() {
                       Annual Plan
                     </p>
                     <h3 className="mt-3 text-3xl font-black uppercase italic tracking-tighter text-white">
-                      Rs. 500 / Annual
+                      Rs. 500 / Annual · Coming Soon
                     </h3>
                   </div>
                   <div className="rounded-2xl bg-white/10 p-3">

@@ -79,13 +79,13 @@ const structure = [
 const fees = [
   {
     name: "Partner Institute Students",
-    price: "Rs. 5,000 + GST",
+    price: "Rs. 5,000 + GST (18%)",
     note: "Applicable to current students from partner institutes",
     accent: "border-sky-400/30 bg-sky-500/10",
   },
   {
     name: "Other Students",
-    price: "Rs. 6,000 + GST",
+    price: "Rs. 6,000 + GST (18%)",
     note: "Applicable to all non-partner institute applicants",
     accent: "border-white/10 bg-white/5",
   },

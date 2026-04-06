@@ -29,30 +29,6 @@ const tickerMessages = [
 ];
 
 const events = [
-  { 
-    title: "Jane Street OTC Challenge", 
-    date: "Jan 15, 2026", 
-    location: "Global / Online", 
-    type: "Competition",
-    difficulty: "Elite",
-    color: "from-blue-500 to-cyan-400"
-  },
-  { 
-    title: "Stochastic Calculus Masterclass", 
-    date: "Feb 02, 2026", 
-    location: "London Terminal", 
-    type: "Workshop",
-    difficulty: "Advanced",
-    color: "from-purple-500 to-indigo-400"
-  },
-  { 
-    title: "Citadel Superday Preparation", 
-    date: "Feb 18, 2026", 
-    location: "New York HQ", 
-    type: "Event",
-    difficulty: "Specialized",
-    color: "from-emerald-500 to-teal-400"
-  },
   {
     title: "IMC Prosperity S4",
     date: "Mar 08, 2026",
@@ -68,6 +44,14 @@ const events = [
     type: "Event",
     difficulty: "Professional",
     color: "from-rose-500 to-pink-400"
+  },
+  {
+    title: "National Quant Finance Olympiad by AQUA-IIT Guwahati",
+    date: "Apr 18, 2026",
+    location: "Offline - IIT Guwahati",
+    type: "Olympiad",
+    difficulty: "National",
+    color: "from-sky-500 to-blue-400"
   }
 ];
 
