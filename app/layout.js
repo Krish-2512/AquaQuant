@@ -6,9 +6,9 @@ export const metadata = {
   title: "Q-Lab",
   description: "LeetCode for Quant Finance",
   icons: {
-    icon: "/aqua_logo2.png", // This points to public/aqua_logo2.png
-    shortcut: "/aqua_logo2.png",
-    apple: "/aqua_logo2.png",
+    icon: "/favicon.jpeg",
+    shortcut: "/favicon.jpeg",
+    apple: "/favicon.jpeg",
   },
 };
 
