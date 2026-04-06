@@ -38,7 +38,7 @@ export default function LeftPanel({
           </div>
         </div>
 
-        {/* Status Section - Updated UI Logic */}
+        {/* Status Section - Updated UI Logic and Solving mapp*/}
         <div>
           <h4 className="text-[13px] font-mono text-slate-500 uppercase tracking-widest mb-4">Status</h4>
           <div className="space-y-2">
