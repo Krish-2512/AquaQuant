@@ -266,6 +266,15 @@ export default function SubscriptionPage() {
                     Apply Now
                     <ArrowRight size={16} />
                   </a>
+                  {session?.user?.cohortMember || session?.user?.role === "admin" ? (
+                    <Link
+                      href="/cohort/portal"
+                      className="inline-flex items-center gap-3 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-7 py-4 text-[11px] font-black uppercase tracking-[0.28em] text-emerald-200 transition-all hover:border-emerald-300/50 hover:bg-emerald-400/20"
+                    >
+                      Cohort Portal
+                      <ChevronRight size={16} />
+                    </Link>
+                  ) : null}
                   <a
                     href="#fees"
                     className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/5 px-7 py-4 text-[11px] font-black uppercase tracking-[0.28em] text-white transition-all hover:border-sky-400/40 hover:bg-sky-500/10"

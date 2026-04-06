@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { ChevronLeft, ChevronRight, Loader2, Search } from "lucide-react";
+import { CheckCircle2, ChevronLeft, ChevronRight, Loader2, Search, ToggleLeft, ToggleRight } from "lucide-react";
 
 export default function AdminUsersClient({ initialUsers = [], initialPagination }) {
   const [users, setUsers] = useState(initialUsers);
   const [pagination, setPagination] = useState(initialPagination);
   const [search, setSearch] = useState("");
   const [error, setError] = useState("");
+  const [cohortUpdating, setCohortUpdating] = useState(new Set());
   const [isPending, startTransition] = useTransition();
 
   const fetchUsers = async (pageToLoad, searchValue) => {
@@ -58,6 +59,36 @@ export default function AdminUsersClient({ initialUsers = [], initialPagination 
     });
   };
 
+  const toggleCohort = async (userId, nextValue) => {
+    setCohortUpdating((prev) => new Set(prev).add(userId));
+    try {
+      const res = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, cohortMember: nextValue }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to update user.");
+      }
+
+      setUsers((prev) =>
+        prev.map((user) =>
+          user.id === userId ? { ...user, cohortMember: Boolean(data.cohortMember) } : user
+        )
+      );
+    } catch (updateError) {
+      setError(updateError.message || "Failed to update user.");
+    } finally {
+      setCohortUpdating((prev) => {
+        const next = new Set(prev);
+        next.delete(userId);
+        return next;
+      });
+    }
+  };
+
   return (
     <div className="space-y-8">
       <section className="rounded-[32px] border border-white/10 bg-white/[0.03] p-8">
@@ -97,6 +128,7 @@ export default function AdminUsersClient({ initialUsers = [], initialPagination 
                 <th className="px-5 py-4">User</th>
                 <th className="px-5 py-4">Role</th>
                 <th className="px-5 py-4">University</th>
+                <th className="px-5 py-4">Cohort</th>
                 <th className="px-5 py-4">Attempted</th>
                 <th className="px-5 py-4">Solved</th>
                 <th className="px-5 py-4">Coding Solved</th>
@@ -112,6 +144,27 @@ export default function AdminUsersClient({ initialUsers = [], initialPagination 
                   </td>
                   <td className="px-5 py-4 uppercase">{user.role}</td>
                   <td className="px-5 py-4">{user.university}</td>
+                  <td className="px-5 py-4">
+                    <button
+                      type="button"
+                      onClick={() => toggleCohort(user.id, !user.cohortMember)}
+                      disabled={cohortUpdating.has(user.id)}
+                      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] transition ${
+                        user.cohortMember
+                          ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300"
+                          : "border-white/10 bg-black/20 text-slate-400"
+                      }`}
+                    >
+                      {cohortUpdating.has(user.id) ? (
+                        <Loader2 size={12} className="animate-spin" />
+                      ) : user.cohortMember ? (
+                        <ToggleRight size={14} />
+                      ) : (
+                        <ToggleLeft size={14} />
+                      )}
+                      {user.cohortMember ? "Enabled" : "Disabled"}
+                    </button>
+                  </td>
                   <td className="px-5 py-4">{user.totalAttempted}</td>
                   <td className="px-5 py-4">{user.totalCorrect}</td>
                   <td className="px-5 py-4">{user.codingSolved}</td>
