@@ -92,7 +92,7 @@ const fees = [
 ];
 
 const processSteps = [
-  "Fill the pre-registration form.",
+  "Fill the registration form.",
   "Applications are reviewed to keep the cohort limited and personalized.",
   "Selected students receive the final enrollment link on 7 April.",
 ];
@@ -572,7 +572,7 @@ export default function SubscriptionPage() {
 
                 <p className="mt-6 text-center text-sm leading-relaxed text-slate-100">
                   Scan the QR code or use the direct Google Form link to
-                  complete pre-registration.
+                  complete registration.
                 </p>
 
                 <a
