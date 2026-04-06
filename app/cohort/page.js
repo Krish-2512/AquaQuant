@@ -27,7 +27,7 @@ import {
 
 import aqua_logo2 from "../../public/aqua_logo2.png";
 
-const FORM_LINK = "https://forms.gle/LHk7KFuCUcXdPQdv5";
+const FORM_LINK = "https://docs.google.com/forms/d/e/1FAIpQLSdz0MXzrZwnqtEW-p9as4WejpI20IfhikIP8eTShE995QnHIw/viewform";
 
 const highlights = [
   "Learn quantitative finance from the ground up with structured progression",
@@ -566,7 +566,7 @@ export default function SubscriptionPage() {
 
                 <div className="mt-8 flex flex-col items-center rounded-[30px] border border-white/15 bg-white p-5">
                   <NextImage
-                    src="/Form_qr.jpeg"
+                    src="/qr1.jpeg"
                     alt="Cohort QR Code"
                     width={220}
                     height={220}
@@ -595,7 +595,14 @@ export default function SubscriptionPage() {
                   rel="noreferrer"
                   className="mt-4 block break-all text-center text-sm text-sky-100 underline decoration-sky-400/40 underline-offset-4 hover:text-white"
                 >
-                  {FORM_LINK}
+                  Registration Form
+                </a>
+                <a
+                  href="/Cohort_Brochure.pdf"
+                  download
+                  className="mt-3 block text-center text-sm text-sky-100 underline decoration-sky-400/40 underline-offset-4 hover:text-white"
+                >
+                  Cohort Brochure
                 </a>
               </div>
             </div>
