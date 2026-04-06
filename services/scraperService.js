@@ -35,12 +35,12 @@ export async function scrapeOpenQuant() {
 
         await qPage.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
         
-        // Use a more generic selector if h1 is failing
+        
         await qPage.waitForSelector('main', { timeout: 15000 });
 
         const data = await qPage.evaluate(() => {
           const title = document.querySelector('h1')?.innerText;
-          // OpenQuant often puts the main content in an <article> tag
+          
           const content = document.querySelector('article')?.innerText || 
                           document.querySelector('main')?.innerText;
           const tags = Array.from(document.querySelectorAll('a[href*="topic"]'))
