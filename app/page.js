@@ -132,7 +132,7 @@ const whyAqua = [
   },
   {
     id: "03",
-    title: "100% Placement Assistance",
+    title: "Placement Assistance",
     desc: "Secure your post-course placement in tech companies with great package today.",
     icon: <Award className="text-sky-400" size={24} />,
     align: "left"

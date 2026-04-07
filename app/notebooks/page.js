@@ -8,13 +8,15 @@ import {
 } from 'lucide-react';
 
 const ARCHIVE_DATA = [
-  { id: 'aug-2025', month: 'August', year: '2025', count: 12, status: 'Completed' },
-  { id: 'sep-2025', month: 'September', year: '2025', count: 15, status: 'Completed' },
-  { id: 'oct-2025', month: 'October', year: '2025', count: 8, status: 'Completed' },
-  { id: 'nov-2025', month: 'November', year: '2025', count: 20, status: 'Completed' },
-  { id: 'dec-2025', month: 'December', year: '2025', count: 18, status: 'Completed' },
-  { id: 'jan-2026', month: 'January', year: '2026', count: 10, status: 'Active' },
-  { id: 'feb-2026', month: 'February', year: '2026', count: 0, status: 'Upcoming' },
+  { id: 'aug-2025', month: 'August', year: '2025', count: 12, status: 'Ended' },
+  { id: 'sep-2025', month: 'September', year: '2025', count: 15, status: 'Ended' },
+  { id: 'oct-2025', month: 'October', year: '2025', count: 8, status: 'Ended' },
+  { id: 'nov-2025', month: 'November', year: '2025', count: 20, status: 'Ended' },
+  { id: 'dec-2025', month: 'December', year: '2025', count: 18, status: 'Ended' },
+  { id: 'jan-2026', month: 'January', year: '2026', count: 10, status: 'Ended' },
+  { id: 'feb-2026', month: 'February', year: '2026', count: 0, status: 'Ended' },
+  { id: 'mar-2026', month: 'March', year: '2026', count: 0, status: 'Ended' },
+  { id: 'apr-2026', month: 'April', year: '2026', count: 0, status: 'Coming Soon' },
 ];
 
 export default function NotebookArchive() {
@@ -64,12 +66,15 @@ export default function NotebookArchive() {
 
         {/* --- GRID --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ARCHIVE_DATA.map((item) => (
+          {ARCHIVE_DATA.map((item) => {
+            const isLocked = item.status === 'Upcoming' || item.status === 'Coming Soon';
+
+            return (
             <Link 
               key={item.id} 
-              href={item.status === 'Upcoming' ? '#' : `/notebooks/${item.id}`}
+              href={isLocked ? '#' : `/notebooks/${item.id}`}
               className={`group relative p-8 rounded-[32px] border transition-all duration-500 ${
-                item.status === 'Upcoming' 
+                isLocked 
                 ? 'bg-white/[0.01] border-white/5 cursor-not-allowed opacity-50' 
                 : 'bg-white/[0.03] border-white/10 hover:border-sky-500/50 hover:bg-sky-500/5'
               }`}
@@ -82,7 +87,7 @@ export default function NotebookArchive() {
               <div className="relative z-10">
                 <div className="flex justify-between items-start mb-6">
                   <div className="p-3 bg-white/5 rounded-2xl group-hover:bg-sky-500/20 transition-colors">
-                    <Calendar size={24} className={item.status === 'Upcoming' ? 'text-slate-600' : 'text-sky-400'} />
+                    <Calendar size={24} className={isLocked ? 'text-slate-600' : 'text-sky-400'} />
                   </div>
                   <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border ${
                     item.status === 'Active' ? 'text-emerald-400 border-emerald-400/20 bg-emerald-400/10' : 'text-slate-500 border-white/10'
@@ -98,7 +103,7 @@ export default function NotebookArchive() {
 
                 <div className="flex items-center justify-between mt-auto">
                   <span className="text-xs font-bold text-slate-400">{item.count} Problems</span>
-                  {item.status === 'Upcoming' ? (
+                  {isLocked ? (
                     <Lock size={16} className="text-slate-700" />
                   ) : (
                     <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform text-sky-500" />
@@ -106,7 +111,7 @@ export default function NotebookArchive() {
                 </div>
               </div>
             </Link>
-          ))}
+          )})}
         </div>
       </div>
     </div>

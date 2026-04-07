@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { signIn, getProviders } from "next-auth/react";
 
-export default function SignIn() {
+function SignInInner() {
   const [providers, setProviders] = useState(null);
   const searchParams = useSearchParams();
   const errorCode = searchParams?.get("error");
@@ -85,5 +85,23 @@ export default function SignIn() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SignIn() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-black">
+          <div className="border border-gray-800 rounded-xl p-10 w-full max-w-md">
+            <h2 className="text-2xl font-semibold mb-4">Sign in to Q-LAB</h2>
+            <p className="text-gray-400 mb-8">Loading sign-in...</p>
+            <div className="h-10 w-full rounded-lg bg-white/5 animate-pulse" />
+          </div>
+        </div>
+      }
+    >
+      <SignInInner />
+    </Suspense>
   );
 }
