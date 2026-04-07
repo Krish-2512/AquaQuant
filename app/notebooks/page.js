@@ -14,8 +14,8 @@ const ARCHIVE_DATA = [
   { id: 'nov-2025', month: 'November', year: '2025', count: 20, status: 'Ended' },
   { id: 'dec-2025', month: 'December', year: '2025', count: 18, status: 'Ended' },
   { id: 'jan-2026', month: 'January', year: '2026', count: 10, status: 'Ended' },
-  { id: 'feb-2026', month: 'February', year: '2026', count: 0, status: 'Ended' },
-  { id: 'mar-2026', month: 'March', year: '2026', count: 0, status: 'Ended' },
+  { id: 'feb-2026', month: 'February', year: '2026', count: 10, status: 'Ended' },
+  { id: 'mar-2026', month: 'March', year: '2026', count: 10, status: 'Ended' },
   { id: 'apr-2026', month: 'April', year: '2026', count: 0, status: 'Coming Soon' },
 ];
 

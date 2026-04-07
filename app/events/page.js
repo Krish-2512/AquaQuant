@@ -349,10 +349,10 @@ export default function EventsPage() {
 
                 <div className="mt-8 rounded-[26px] border border-amber-400/20 bg-amber-500/10 p-5">
                   <p className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-300">
-                    Team Call
+                    Call to action
                   </p>
                   <p className="mt-3 text-sm leading-relaxed text-slate-100">
-                    Form your teams and step into the world where math meets markets.
+                  Form your resolute and step into the world where math meets market
                   </p>
                 </div>
               </div>
