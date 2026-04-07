@@ -94,7 +94,7 @@ const fees = [
 const processSteps = [
   "Fill the registration form.",
   "Applications are reviewed to keep the cohort limited and personalized.",
-  "Selected students receive the final enrollment link on 7 April.",
+  "Selected students receive the final enrollment link by 13th April.",
 ];
 
 const audience = [
@@ -136,8 +136,8 @@ export default function SubscriptionPage() {
               />
             </div>
             <div className="flex items-center">
-              <span className="ml-1 text-2xl font-black uppercase italic tracking-tighter text-sky-400">
-                -Lab
+              <span className="ml-0 text-2xl font-black uppercase italic tracking-tighter text-sky-400">
+                LAB
               </span>
               <span className="mx-2 text-2xl font-medium italic text-white/40">
                 BY

@@ -173,92 +173,7 @@ const chunkItems = (items, size) => {
 };
 
 const QuantNexus = () => {
-  // return (
-  //   <div className="relative w-full h-[800px] flex items-center justify-center overflow-hidden">
-  //     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(56,189,248,0.2)_0%,_transparent_75%)]" />
-  //     {[1.2, 1.5, 1.8].map((s, i) => (
-  //       <motion.div 
-  //         key={i}
-  //         animate={{ scale: [1, s], opacity: [0.3, 0] }}
-  //         transition={{ duration: 4, repeat: Infinity, delay: i * 1.3 }}
-  //         className="absolute border border-white/20 rounded-full w-[400px] h-[400px]"
-  //       />
-  //     ))}
-  //     <motion.div 
-  //       whileHover={{ scale: 1.1, rotate: 90 }}
-  //       className="z-50 bg-white backdrop-blur-3xl border-2 border-sky-400 w-56 h-56 rounded-full flex flex-col items-center justify-center shadow-[0_0_80px_rgba(56,189,248,0.4)]"
-  //     >
-  //       <span className="text-sky-950 font-black italic text-5xl tracking-tighter">QUANT</span>
-  //       <div className="h-[2px] w-12 bg-sky-200 my-3" />
-  //       <span className="text-[10px] font-mono text-sky-600 uppercase tracking-[0.5em] font-bold">Nexus_OS</span>
-  //     </motion.div>
-  //     {orbits.map((orb, i) => (
-  //       <motion.div
-  //         key={i}
-  //         className="absolute border border-white/10 rounded-full"
-  //         animate={{ rotate: 360 }}
-  //         transition={{ duration: orb.speed, repeat: Infinity, ease: "linear" }}
-  //         style={{ width: orb.radius * 2, height: orb.radius * 2 }}
-  //       >
-  //         <motion.div 
-  //           className="bg-white px-4 py-1.5 rounded-full whitespace-nowrap text-[10px] font-mono font-black text-sky-900 shadow-xl border border-sky-100"
-  //           style={{ position: 'absolute', top: '50%', left: '-20px' }}
-  //           animate={{ rotate: -360 }}
-  //           transition={{ duration: orb.speed, repeat: Infinity, ease: "linear" }}
-  //         >
-  //           {orb.name}
-  //         </motion.div>
-  //       </motion.div>
-  //     ))}
-  //   </div>
-  // );
 
-  // return (
-  //   <div className="relative w-full h-[800px] flex items-center justify-center overflow-hidden [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]">
-  //     {/* Subtle Sky Glow instead of dark radial */}
-  //     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(56,189,248,0.15)_0%,_transparent_70%)]" />
-  
-  //     {/* Pulsing Core Waves */}
-  //     {[1.2, 1.5, 1.8].map((s, i) => (
-  //       <motion.div 
-  //         key={i}
-  //         animate={{ scale: [1, s], opacity: [0.3, 0] }}
-  //         transition={{ duration: 4, repeat: Infinity, delay: i * 1.3 }}
-  //         className="absolute border border-white/20 rounded-full w-[400px] h-[400px]"
-  //       />
-  //     ))}
-  
-  //     {/* Center Core */}
-  //     <motion.div 
-  //       whileHover={{ scale: 1.1, rotate: 90 }}
-  //       className="z-50 bg-white backdrop-blur-3xl border-2 border-sky-400 w-56 h-56 rounded-full flex flex-col items-center justify-center shadow-[0_0_80px_rgba(56,189,248,0.4)]"
-  //     >
-  //       <span className="text-sky-950 font-black italic text-5xl tracking-tighter">QUANT</span>
-  //       <div className="h-[2px] w-12 bg-sky-200 my-3" />
-  //       <span className="text-[10px] font-mono text-sky-600 uppercase tracking-[0.5em] font-bold">Nexus_OS</span>
-  //     </motion.div>
-  
-  //     {/* Orbits */}
-  //     {orbits.map((orb, i) => (
-  //       <motion.div
-  //         key={i}
-  //         className="absolute border border-white/10 rounded-full"
-  //         animate={{ rotate: 360 }}
-  //         transition={{ duration: orb.speed, repeat: Infinity, ease: "linear" }}
-  //         style={{ width: orb.radius * 2, height: orb.radius * 2 }}
-  //       >
-  //         <motion.div 
-  //           className="bg-white px-4 py-1.5 rounded-full whitespace-nowrap text-[10px] font-mono font-black text-sky-900 shadow-xl border border-sky-100"
-  //           style={{ position: 'absolute', top: '50%', left: '-20px' }}
-  //           animate={{ rotate: -360 }}
-  //           transition={{ duration: orb.speed, repeat: Infinity, ease: "linear" }}
-  //         >
-  //           {orb.name}
-  //         </motion.div>
-  //       </motion.div>
-  //     ))}
-  //   </div>
-  // );
   return (
     /* Removed h-[800px] and added py-20. Added overflow-visible so rings don't clip */
     <div className="relative w-full py-32 flex items-center justify-center overflow-visible">
@@ -292,7 +207,7 @@ const QuantNexus = () => {
       >
         <span className="text-sky-950 font-black italic text-5xl tracking-tighter">QUANT</span>
         <div className="h-[2px] w-12 bg-sky-200 my-3" />
-        <span className="text-[10px] font-mono text-sky-600 uppercase tracking-[0.5em] font-bold">Nexus_OS</span>
+        {/* <span className="text-[10px] font-mono text-sky-600 uppercase tracking-[0.5em] font-bold">Nexus_OS</span> */}
       </motion.div>
 
       {/* 5. Rotating Labels */}
@@ -449,8 +364,8 @@ export default function Page() {
 
   <div className="flex items-center">
    
-    <span className="text-2xl font-black tracking-tighter italic uppercase text-sky-400 ml-1">
-      -Lab
+    <span className="text-2xl font-black tracking-tighter italic uppercase text-sky-400 ml-0">
+      LAB
     </span>
 
    
@@ -793,9 +708,14 @@ export default function Page() {
                             <p className="text-slate-400 text-sm leading-relaxed mb-10 italic">
                               {course.desc}
                             </p>
-                            <button className="mt-auto flex items-center gap-3 text-sky-950 font-black uppercase text-[10px] tracking-widest border-b-2 border-sky-400 pb-1 group-hover:gap-6 transition-all w-fit">
-                              Course Details <ArrowRight size={14}/>
-                            </button>
+                            <div className="mt-auto space-y-3">
+                              <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                                Coming Soon
+                              </span>
+                              <button className="flex items-center gap-3 text-sky-950 font-black uppercase text-[10px] tracking-widest border-b-2 border-sky-400 pb-1 group-hover:gap-6 transition-all w-fit">
+                                Course Details <ArrowRight size={14}/>
+                              </button>
+                            </div>
                           </div>
                         </motion.div>
                       ))}
@@ -853,9 +773,14 @@ export default function Page() {
                         <p className="text-slate-400 text-sm md:text-base leading-relaxed mb-10 italic max-w-2xl">
                           {courses[currentCourseIdx].desc}
                         </p>
-                        <button className="mt-auto flex items-center gap-3 text-sky-950 font-black uppercase text-[10px] tracking-widest border-b-2 border-sky-400 pb-1 group-hover:gap-6 transition-all w-fit">
-                          Course Details <ArrowRight size={14}/>
-                        </button>
+                        <div className="mt-auto space-y-3">
+                          <span className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                            Coming Soon
+                          </span>
+                          <button className="flex items-center gap-3 text-sky-950 font-black uppercase text-[10px] tracking-widest border-b-2 border-sky-400 pb-1 group-hover:gap-6 transition-all w-fit">
+                            Course Details <ArrowRight size={14}/>
+                          </button>
+                        </div>
                       </div>
                     </motion.div>
                   </AnimatePresence>
