@@ -1,10 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { signIn, getProviders } from "next-auth/react";
 
 export default function SignIn() {
   const [providers, setProviders] = useState(null);
+  const searchParams = useSearchParams();
+  const errorCode = searchParams?.get("error");
+
+  const errorMessage = useMemo(() => {
+    if (!errorCode) return "";
+    const map = {
+      AccessDenied: "Access denied. Your account may not be permitted yet.",
+      OAuthAccountNotLinked: "This email is already linked with another login method.",
+      OAuthCallback: "OAuth callback failed. Please try again.",
+      Configuration: "Auth configuration error. Contact support.",
+      Verification: "Email verification failed. Try again.",
+    };
+    return map[errorCode] || "Sign-in failed. Please try again.";
+  }, [errorCode]);
 
   useEffect(() => {
     let mounted = true;
@@ -22,6 +37,11 @@ export default function SignIn() {
         <h2 className="text-2xl font-semibold mb-4">Sign in to Q-LAB</h2>
 
         <p className="text-gray-400 mb-8">Practice real quant interview problems.</p>
+        {errorMessage ? (
+          <div className="mb-6 rounded-lg border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+            {errorMessage}
+          </div>
+        ) : null}
 
         <div className="space-y-3">
           {providers === null && (
