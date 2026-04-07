@@ -4,6 +4,7 @@ import { getToken } from "next-auth/jwt";
 const PUBLIC_PATHS = new Set([
   "/",
   "/cohort",
+  "/events",
   "/subscription",
   "/auth/signin",
   "/api/health",

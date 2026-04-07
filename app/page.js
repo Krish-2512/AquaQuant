@@ -380,7 +380,7 @@ export default function Page() {
 </div>
           
    <div className="hidden lg:flex gap-10 text-[14px] font-mono uppercase tracking-[0.3em] text-sky-100 font-bold">
-  {['Notebooks', 'Questions', 'Cohort', 'Subscription'].map((item) => {
+  {['Notebooks', 'Questions', 'Cohort', 'Subscription', 'Events'].map((item) => {
     let href = "#";
     
    
@@ -392,6 +392,8 @@ export default function Page() {
       href = "/cohort";
     } else if (item === 'Subscription') {
       href = "/subscription";
+    } else if (item === 'Events') {
+      href = "/events";
     }
 
     return (
