@@ -1,10 +1,10 @@
 "use client";
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { 
   Notebook as NotebookIcon, Calendar, ArrowRight, 
   Lock, Trophy, LayoutDashboard, Sparkles, 
-  Home
+  Home, Search
 } from 'lucide-react';
 
 const ARCHIVE_DATA = [
@@ -20,6 +20,22 @@ const ARCHIVE_DATA = [
 ];
 
 export default function NotebookArchive() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+
+  const filteredArchive = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+    return ARCHIVE_DATA.filter((item) => {
+      const matchesQuery = normalizedQuery.length === 0
+        || `${item.month} ${item.year}`.toLowerCase().includes(normalizedQuery);
+
+      const matchesStatus =
+        statusFilter === "All" || item.status.toLowerCase() === statusFilter.toLowerCase();
+
+      return matchesQuery && matchesStatus;
+    });
+  }, [searchQuery, statusFilter]);
+
   return (
     <div className="min-h-screen bg-[#020617] text-slate-300 p-8">
       <div className="max-w-6xl mx-auto">
@@ -51,6 +67,36 @@ export default function NotebookArchive() {
           </div>
         </div>
 
+        {/* --- SEARCH + FILTERS --- */}
+        <div className="flex flex-col lg:flex-row lg:items-center gap-4 mb-10">
+          <div className="relative w-full lg:max-w-md">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600" size={14} />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Search month or year..."
+              className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-11 pr-4 text-sm text-white placeholder:text-slate-600 outline-none focus:border-sky-500/50 transition-all"
+            />
+          </div>
+
+          <div className="flex items-center gap-3">
+            {["All", "Ended", "Coming Soon"].map((status) => (
+              <button
+                key={status}
+                onClick={() => setStatusFilter(status)}
+                className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border transition-all ${
+                  statusFilter === status
+                    ? "bg-sky-500 border-sky-500 text-sky-950 shadow-[0_0_18px_rgba(14,165,233,0.3)]"
+                    : "bg-white/5 border-white/10 text-slate-500 hover:border-white/30 hover:text-white"
+                }`}
+              >
+                {status}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* --- PROBLEM OF THE MONTH PROMO SECTION --- */}
         <div className="relative mb-12 p-1 border-b border-white/5">
            <div className="absolute -top-12 left-0 w-full h-32 bg-sky-500/10 blur-[100px] pointer-events-none" />
@@ -66,7 +112,7 @@ export default function NotebookArchive() {
 
         {/* --- GRID --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ARCHIVE_DATA.map((item) => {
+          {filteredArchive.map((item) => {
             const isLocked = item.status === 'Upcoming' || item.status === 'Coming Soon';
 
             return (

@@ -2,8 +2,8 @@
 
 
 "use client";
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { 
   Search, CheckCircle2, Circle, 
   Terminal, BookOpen, MessageSquare, Brain, Notebook,
@@ -32,6 +32,14 @@ export default function ProblemsPage() {
 const [totalPages, setTotalPages] = useState(1);
 const [category, setCategory] = useState('all'); // 'all', 'math', or 'coding'
 const [isCompanyOpen, setIsCompanyOpen] = useState(false);
+const [progressStats, setProgressStats] = useState({
+  solved: 0,
+  attempted: 0,
+  accuracy: 0,
+  codingSolved: 0,
+  codingTotal: 0,
+});
+const [progressLoading, setProgressLoading] = useState(true);
 
   
   // States for Filter Logic
@@ -39,6 +47,7 @@ const [isCompanyOpen, setIsCompanyOpen] = useState(false);
   const [filterDifficulty, setFilterDifficulty] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
   const [activeCategory, setActiveCategory] = useState("All");
+  const searchParams = useSearchParams();
 
   const COMPANIES = [
     'CITADEL', 'JANE STREET', 'OPTIVER', 'HRT', 'IMC TRADING', 
@@ -49,6 +58,34 @@ const [isCompanyOpen, setIsCompanyOpen] = useState(false);
     setMounted(true);
     fetchProblems();
   }, [activeCategory, filterDifficulty, filterStatus, searchQuery, currentPage]);
+
+  useEffect(() => {
+    const queryParam = searchParams.get("search");
+    if (queryParam && queryParam !== searchQuery) {
+      setSearchQuery(queryParam);
+    }
+  }, [searchParams, searchQuery]);
+
+  const fetchUserProgress = useCallback(async () => {
+    setProgressLoading(true);
+    try {
+      const res = await fetch('/api/user/stats');
+      const data = await res.json();
+      if (data.success) {
+        setProgressStats({
+          solved: data.totalSolved || 0,
+          attempted: data.totalAttempted || 0,
+          accuracy: Number(data.accuracy || 0),
+          codingSolved: data.codingStats?.solved || 0,
+          codingTotal: data.codingStats?.total || 0,
+        });
+      }
+    } catch (err) {
+      console.error("Error fetching progress stats:", err);
+    } finally {
+      setProgressLoading(false);
+    }
+  }, []);
 
   const fetchProblems = async () => {
     setLoading(true);
@@ -81,6 +118,10 @@ const [isCompanyOpen, setIsCompanyOpen] = useState(false);
   useEffect(() => {
     setCurrentPage(1);
   }, [activeCategory, filterDifficulty, filterStatus, searchQuery]);
+
+  useEffect(() => {
+    void fetchUserProgress();
+  }, [fetchUserProgress]);
 
   if (!mounted) return <div className="min-h-screen bg-[#020617]" />;
 
@@ -192,6 +233,40 @@ const [isCompanyOpen, setIsCompanyOpen] = useState(false);
         {/* 3. MAIN CONTENT */}
         <main className="flex-1 p-8 min-w-0">
           <div className="max-w-4xl mx-auto mb-10">
+            <section className="mb-8 rounded-[32px] border border-white/10 bg-white/[0.03] p-6">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.35em] text-sky-400">
+                    Your Progress
+                  </p>
+                  <h2 className="text-2xl font-black italic text-white">Weekly Snapshot</h2>
+                </div>
+                <div className="text-[10px] font-mono uppercase tracking-widest text-slate-500">
+                  {progressLoading ? "Syncing..." : "Updated from live stats"}
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-4 md:grid-cols-4">
+                {[
+                  { label: "Solved", value: progressStats.solved },
+                  { label: "Attempted", value: progressStats.attempted },
+                  { label: "Accuracy", value: `${progressStats.accuracy}%` },
+                  {
+                    label: "Coding Solved",
+                    value: `${progressStats.codingSolved}/${progressStats.codingTotal}`,
+                  },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-2xl border border-white/10 bg-black/30 px-4 py-4">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
+                      {item.label}
+                    </p>
+                    <p className="mt-2 text-2xl font-black italic text-white">
+                      {progressLoading ? "--" : item.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
             
           <Link href="/leaderboard" className="block mb-8 group">
   <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-r from-amber-500/10 via-transparent to-transparent border border-amber-500/20 p-6 transition-all hover:border-amber-500/40">
