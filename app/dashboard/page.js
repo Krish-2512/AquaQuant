@@ -189,6 +189,15 @@ const [progressLoading, setProgressLoading] = useState(true);
 
         {/* PROFILE ACCESSOR */}
         <div className="flex items-center gap-4">
+          {session ? (
+            <Link href="/cohort/portal">
+              <button className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl border border-emerald-400/30 bg-emerald-500/10 text-emerald-200 hover:border-emerald-300/50 hover:bg-emerald-400/20 transition-all">
+                <span className="text-[11px] font-black uppercase tracking-widest">Cohort Portal</span>
+                <ArrowRight size={14} />
+              </button>
+            </Link>
+          ) : null}
+
           <div className="hidden sm:flex flex-col items-end mr-2">
             <span className="text-[10px] font-black text-white uppercase tracking-tighter leading-none">
               {session?.user?.name || "Anonymous_User"}
