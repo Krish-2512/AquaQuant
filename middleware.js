@@ -9,6 +9,7 @@ const PUBLIC_PATHS = new Set([
   "/auth/signin",
   "/api/health",
   "/api/health/ready",
+  "/api/jobs/leaderboard-rebuild",
 ]);
 
 function isPublicPath(pathname) {

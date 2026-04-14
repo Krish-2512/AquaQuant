@@ -267,12 +267,12 @@ export default function SubscriptionPage() {
                     Apply Now
                     <ArrowRight size={16} />
                   </a>
-                  {session?.user?.cohortMember || session?.user?.role === "admin" ? (
+                  {session ? (
                     <Link
                       href="/cohort/portal"
                       className="inline-flex items-center gap-3 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-7 py-4 text-[11px] font-black uppercase tracking-[0.28em] text-emerald-200 transition-all hover:border-emerald-300/50 hover:bg-emerald-400/20"
                     >
-                      Cohort Portal
+                      Cohort Portal Access
                       <ChevronRight size={16} />
                     </Link>
                   ) : null}

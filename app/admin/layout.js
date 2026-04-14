@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BarChart3, BookPlus, ShieldCheck, Users, FolderPlus } from "lucide-react";
+import { BarChart3, BookPlus, ShieldCheck, Users, FolderPlus, LineChart, KeyRound } from "lucide-react";
 import { requireAdminPage } from "@/lib/admin";
 
 export const dynamic = "force-dynamic";
@@ -7,9 +7,11 @@ export const runtime = "nodejs";
 
 const navItems = [
   { href: "/admin", label: "Overview", icon: BarChart3 },
+  { href: "/admin/analytics", label: "Analytics", icon: LineChart },
   { href: "/admin/questions", label: "Questions", icon: BookPlus },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/cohort", label: "Cohort", icon: FolderPlus },
+  { href: "/admin/cohort-access", label: "Cohort Access", icon: KeyRound },
 ];
 
 export default async function AdminLayout({ children }) {

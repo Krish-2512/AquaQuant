@@ -7,6 +7,8 @@ const UserSchema = new mongoose.Schema({
   cohortMember: { type: Boolean, default: false },
   university: { type: String, default: 'Not Specified' },
   image: { type: String }, // For Google profile pics
+  lastLoginAt: { type: Date },
+  cohortVerifiedAt: { type: Date },
   
   // High-level Progress
   totalAttempted: { type: Number, default: 0 },

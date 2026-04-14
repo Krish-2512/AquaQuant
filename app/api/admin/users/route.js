@@ -30,7 +30,7 @@ export async function GET(request) {
 
     const [users, total] = await Promise.all([
       User.find(query)
-      .select("name email image university role cohortMember totalAttempted totalCorrect questionProgress codingProgress createdAt")
+      .select("name email image university role totalAttempted totalCorrect questionProgress codingProgress createdAt")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -45,7 +45,6 @@ export async function GET(request) {
       image: user.image || "",
       university: user.university || "Not Specified",
       role: user.role || "user",
-      cohortMember: Boolean(user.cohortMember),
       totalAttempted: user.totalAttempted || 0,
       totalCorrect: user.totalCorrect || 0,
       theorySolved: (user.questionProgress || []).filter((entry) => entry.status === "Solved").length,
@@ -65,38 +64,5 @@ export async function GET(request) {
   } catch (error) {
     logError("Admin users fetch failed", error);
     return NextResponse.json({ success: false, error: "Failed to load users." }, { status: 500 });
-  }
-}
-
-export async function PATCH(request) {
-  const access = await requireAdminApi();
-  if (!access.ok) {
-    return access.response;
-  }
-
-  try {
-    const body = await request.json();
-    const userId = typeof body.userId === "string" ? body.userId.trim() : "";
-    const cohortMember = Boolean(body.cohortMember);
-
-    if (!userId) {
-      return NextResponse.json({ success: false, error: "User id is required." }, { status: 400 });
-    }
-
-    await dbConnect();
-    const updated = await User.findByIdAndUpdate(
-      userId,
-      { cohortMember },
-      { new: true, select: "cohortMember" }
-    ).lean();
-
-    if (!updated) {
-      return NextResponse.json({ success: false, error: "User not found." }, { status: 404 });
-    }
-
-    return NextResponse.json({ success: true, cohortMember: Boolean(updated.cohortMember) });
-  } catch (error) {
-    logError("Admin user update failed", error);
-    return NextResponse.json({ success: false, error: "Failed to update user." }, { status: 500 });
   }
 }
