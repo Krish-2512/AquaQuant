@@ -20,7 +20,11 @@ export default async function CohortPortalPage() {
     title: item.title,
     summary: item.summary || "",
     videoUrl: item.videoUrl || "",
-    attachments: item.attachments || [],
+    attachments: (item.attachments || []).map((file) => ({
+      ...file,
+      label: file.label || "Attachment",
+      url: file.url || "",
+    })),
     createdAt: item.createdAt ? new Date(item.createdAt).toLocaleDateString() : "N/A",
   }));
 

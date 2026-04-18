@@ -102,6 +102,14 @@ export default function CohortPortalClient({ initialContent = [], user }) {
     }
   };
 
+  const buildProtectedViewUrl = (fileUrl, fileName) => {
+    const params = new URLSearchParams({
+      url: fileUrl || "",
+      name: fileName || "file",
+    });
+    return `/api/cohort/files/view?${params.toString()}`;
+  };
+
   return (
     <div className="min-h-screen bg-[#020617] text-slate-100 px-6 py-12">
       <div className="mx-auto max-w-6xl space-y-10">
@@ -149,7 +157,7 @@ export default function CohortPortalClient({ initialContent = [], user }) {
                   {item.attachments.map((file, idx) => (
                     <a
                       key={`${file.url}-${idx}`}
-                      href={file.url}
+                      href={buildProtectedViewUrl(file.url, file.label)}
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center gap-3 rounded-[22px] border border-white/10 bg-black/20 px-4 py-3 text-xs text-slate-200 hover:border-sky-400/40"
@@ -243,7 +251,7 @@ export default function CohortPortalClient({ initialContent = [], user }) {
                   submissions.slice(0, 5).map((submission) => (
                     <a
                       key={submission._id}
-                      href={submission.fileUrl}
+                      href={buildProtectedViewUrl(submission.fileUrl, submission.fileName)}
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center justify-between rounded-[18px] border border-white/10 bg-black/20 px-3 py-2 text-xs text-slate-300"
