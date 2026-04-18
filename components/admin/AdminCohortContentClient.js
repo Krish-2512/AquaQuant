@@ -12,8 +12,8 @@ import {
   Video,
 } from "lucide-react";
 
-const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+const initialCloudName = (process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "").trim();
+const initialUploadPreset = (process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "").trim();
 
 const emptyForm = {
   week: "",
@@ -30,6 +30,10 @@ export default function AdminCohortContentClient({ initialContent = [] }) {
   const [notice, setNotice] = useState("");
   const [isPending, startTransition] = useTransition();
   const [uploading, setUploading] = useState(false);
+  const [cloudConfig, setCloudConfig] = useState({
+    cloudName: initialCloudName,
+    uploadPreset: initialUploadPreset,
+  });
 
   const isEditing = Boolean(editingId);
 
@@ -50,6 +54,30 @@ export default function AdminCohortContentClient({ initialContent = [] }) {
     setAttachments(item.attachments || []);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const loadRuntimeConfig = async () => {
+      try {
+        const res = await fetch("/api/runtime/cloudinary", { cache: "no-store" });
+        const data = await res.json();
+        if (!res.ok || !data?.success) return;
+
+        const runtimeCloudName = (data.cloudinary?.cloudName || "").trim();
+        const runtimeUploadPreset = (data.cloudinary?.uploadPreset || "").trim();
+
+        if (runtimeCloudName && runtimeUploadPreset) {
+          setCloudConfig({
+            cloudName: runtimeCloudName,
+            uploadPreset: runtimeUploadPreset,
+          });
+        }
+      } catch {
+        // Keep local fallback if runtime fetch fails.
+      }
+    };
+
+    loadRuntimeConfig();
+  }, []);
 
   const refreshContent = async () => {
     startTransition(async () => {
@@ -125,7 +153,7 @@ export default function AdminCohortContentClient({ initialContent = [] }) {
   };
 
   const handleUploadAttachment = async (file) => {
-    if (!file || !cloudName || !uploadPreset) {
+    if (!file || !cloudConfig.cloudName || !cloudConfig.uploadPreset) {
       setNotice("Cloudinary is not configured.");
       return;
     }
@@ -134,9 +162,9 @@ export default function AdminCohortContentClient({ initialContent = [] }) {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", uploadPreset);
+      formData.append("upload_preset", cloudConfig.uploadPreset);
 
-      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/raw/upload`, {
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudConfig.cloudName}/raw/upload`, {
         method: "POST",
         body: formData,
       });
