@@ -258,7 +258,7 @@ export default function AdminCohortContentClient({ initialContent = [] }) {
               <input
                 value={form.videoUrl}
                 onChange={(event) => setForm((prev) => ({ ...prev, videoUrl: event.target.value }))}
-                placeholder="Video embed link (YouTube/Vimeo)"
+                placeholder="Weekly resource link (Drive/YouTube/Vimeo)"
                 className="w-full rounded-2xl border border-white/10 bg-black/20 py-3 pl-11 pr-4 text-sm text-white outline-none focus:border-sky-400/40"
               />
             </div>
