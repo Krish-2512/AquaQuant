@@ -380,10 +380,9 @@ export default function Page() {
 </div>
           
    <div className="hidden lg:flex gap-10 text-[14px] font-mono uppercase tracking-[0.3em] text-sky-100 font-bold">
-  {['Notebooks', 'Questions', 'Cohort', 'Subscription', 'Events'].map((item) => {
+  {['Notebooks', 'Questions', 'Cohort', 'Subscription', 'Events', 'Webinar'].map((item) => {
     let href = "#";
-    
-   
+
     if (item === 'Questions') {
       href = session ? "/dashboard" : "/auth/signin";
     } else if (item === 'Notebooks') {
@@ -394,6 +393,8 @@ export default function Page() {
       href = "/subscription";
     } else if (item === 'Events') {
       href = "/events";
+    } else if (item === 'Webinar') {
+      href = "/webinar";
     }
 
     return (

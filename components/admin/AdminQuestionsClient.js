@@ -2,6 +2,10 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { CheckCircle2, Edit3, Loader2, Plus, RefreshCcw, Trash2, XCircle } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 
 const emptyForm = {
   id: "",
@@ -149,6 +153,13 @@ export default function AdminQuestionsClient({ initialQuestions = [] }) {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="rounded-2xl border border-sky-500/20 bg-sky-500/10 p-4 text-xs text-sky-100">
+            <p className="font-black uppercase tracking-[0.18em] text-sky-300">Math Authoring Guide</p>
+            <p className="mt-2">Inline math: <code className="text-sky-200">$\\theta$, $\\mu$, $\\sigma$</code></p>
+            <p className="mt-1">Block math: <code className="text-sky-200">$$\\int_0^1 x^2 dx$$</code></p>
+            <p className="mt-1">Limits: <code className="text-sky-200">$$\\lim_{"{n\\to\\infty}"} \\sum_{"{k=1}"}^n \\frac1k$$</code></p>
+          </div>
+
           <div className="grid gap-5 md:grid-cols-2">
             <label className="space-y-2">
               <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
@@ -250,6 +261,17 @@ export default function AdminQuestionsClient({ initialQuestions = [] }) {
             />
           </label>
 
+          <div className="rounded-[20px] border border-white/10 bg-black/20 p-4">
+            <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+              Question Preview
+            </p>
+            <div className="prose prose-invert prose-slate max-w-none text-sm">
+              <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+                {form.content || "Preview will appear here..."}
+              </ReactMarkdown>
+            </div>
+          </div>
+
           <label className="space-y-2">
             <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
               Solution
@@ -264,6 +286,17 @@ export default function AdminQuestionsClient({ initialQuestions = [] }) {
               placeholder="Explain the solution logic clearly..."
             />
           </label>
+
+          <div className="rounded-[20px] border border-white/10 bg-black/20 p-4">
+            <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+              Solution Preview
+            </p>
+            <div className="prose prose-invert prose-slate max-w-none text-sm">
+              <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+                {form.solution || "Preview will appear here..."}
+              </ReactMarkdown>
+            </div>
+          </div>
 
           <div className="grid gap-5 md:grid-cols-2">
             <label className="space-y-2">

@@ -149,11 +149,12 @@ export default function SubscriptionPage() {
           </Link>
 
           <div className="hidden gap-10 text-[13px] font-bold uppercase tracking-[0.25em] text-sky-100 lg:flex">
-            {["Notebooks", "Questions", "Cohort", "Subscription", "Events"].map((item) => {
+            {["Notebooks", "Questions", "Cohort", "Subscription", "Events", "Webinar"].map((item) => {
               let href = "/";
               if (item === "Cohort") href = "/cohort";
               else if (item === "Subscription") href = "/subscription";
               else if (item === "Events") href = "/events";
+              else if (item === "Webinar") href = "/webinar";
               else if (item === "Notebooks") href = session ? "/notebooks" : "/#notebooks";
               else if (item === "Questions") href = session ? "/dashboard" : "/#questions";
 

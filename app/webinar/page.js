@@ -14,6 +14,7 @@ import {
   ChevronRight,
   GraduationCap,
   Radio,
+  Shield,
   Terminal,
   Users,
 } from "lucide-react";
@@ -38,7 +39,7 @@ const partnerIITs = [
   "IIT Roorkee",
 ];
 
-export default function EventsPage() {
+export default function WebinarPage() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { data: session, status } = useSession();
 
@@ -52,6 +53,7 @@ export default function EventsPage() {
       </div>
 
       <div className="relative z-10">
+        {/* Nav */}
         <nav className="sticky top-0 z-[100] flex items-center justify-between border-b border-white/10 bg-[#071624]/80 px-6 py-5 backdrop-blur-2xl md:px-10">
           <Link href="/" className="flex items-center transition-opacity hover:opacity-90">
             <div className="relative flex h-8 w-8 items-center justify-center">
@@ -77,7 +79,7 @@ export default function EventsPage() {
                 <Link
                   key={item}
                   href={href}
-                  className={item === "Events" ? "text-sky-400" : "transition-colors hover:text-white"}
+                  className={item === "Webinar" ? "text-sky-400" : "transition-colors hover:text-white"}
                 >
                   {item}
                 </Link>
@@ -144,7 +146,7 @@ export default function EventsPage() {
         <main>
           {/* Hero */}
           <section className="px-6 pb-16 pt-20 md:px-10 md:pt-28">
-            <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.25fr_0.75fr] lg:items-start">
+            <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.3fr_0.7fr] lg:items-start">
               <motion.div
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -213,9 +215,9 @@ export default function EventsPage() {
               >
                 <div className="mb-4 flex items-center justify-between">
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-sky-300">Event Spotlight</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-sky-300">Event Poster</p>
                     <h2 className="mt-2 text-xl font-black uppercase italic tracking-tighter text-white">
-                      Webinar Poster
+                      Live Webinar
                     </h2>
                   </div>
                   <div className="rounded-2xl bg-white/10 p-3">
@@ -226,9 +228,9 @@ export default function EventsPage() {
                 <div className="overflow-hidden rounded-[28px] border border-white/10 bg-black/20">
                   <NextImage
                     src="/webinar-1.jpeg"
-                    alt="Can You Build a Career in Quant Finance? Webinar"
-                    width={800}
-                    height={480}
+                    alt="Can You Build a Career in Quant Finance? Webinar Poster"
+                    width={600}
+                    height={900}
                     className="h-auto w-full object-cover"
                   />
                 </div>
@@ -337,29 +339,6 @@ export default function EventsPage() {
                 <p className="mt-4 text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
                   20th June 2026 · Live Online
                 </p>
-              </div>
-            </div>
-          </section>
-
-          {/* Poster */}
-          <section className="px-6 py-12 md:px-10">
-            <div className="mx-auto max-w-3xl">
-              <div className="rounded-[36px] border border-white/10 bg-white/[0.04] p-8 md:p-10">
-                <div className="mb-8 flex items-center gap-3">
-                  <Calendar size={18} className="text-sky-400" />
-                  <h3 className="text-3xl font-black uppercase italic tracking-tighter text-white">
-                    Event Poster
-                  </h3>
-                </div>
-                <div className="overflow-hidden rounded-[30px] border border-white/10 bg-black/20">
-                  <NextImage
-                    src="/webinar-1.jpeg"
-                    alt="Webinar Poster"
-                    width={700}
-                    height={900}
-                    className="h-auto w-full object-cover"
-                  />
-                </div>
               </div>
             </div>
           </section>
